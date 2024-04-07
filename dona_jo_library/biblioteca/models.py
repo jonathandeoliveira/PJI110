@@ -1,105 +1,111 @@
 from django.db import models
 
 
-class Livro(models.Model):
-    nome = models.CharField(max_length=100)
-    isbn = models.CharField(max_length=100, blank=True)
-    autor = models.CharField(max_length=100)
-    editora = models.CharField(max_length=255, blank=True)
-    ano = models.CharField(max_length=10)
-    genero = models.CharField(max_length=40)
-    status = models.IntegerField()
-    classificacao_indicativa = models.CharField(max_length=50)
+# Modelo para Livros
+class Book(models.Model):
+    title = models.CharField(max_length=100)
+    ean_isbn13 = models.CharField(max_length=13, blank=True)
+    upc_isbn10 = models.CharField(max_length=10, blank=True)
+    author_first_name = models.CharField(max_length=100, blank=True)
+    author_last_name = models.CharField(max_length=100, blank=True)
+    publisher = models.CharField(max_length=255, blank=True)
+    description = models.CharField(max_length=255, blank=True)
+    year = models.CharField(max_length=10, blank=True)
+    genre = models.CharField(max_length=40, blank=True)
+    status = models.IntegerField(blank=True)
+    rating = models.CharField(max_length=50, blank=True)
+    item_type = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class Emprestimo(models.Model):
+# Modelo para empréstimos
+class Loan(models.Model):
     status = models.CharField(max_length=100)
-    livro = models.ForeignKey(
-        Livro, on_delete=models.CASCADE, related_name="emprestimos"
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="loans")
+    person = models.ForeignKey(
+        "Person", on_delete=models.CASCADE, related_name="person_loans"
     )
-    pessoa = models.ForeignKey(
-        "Pessoa", on_delete=models.CASCADE, related_name="emprestimos_pessoa"
+    responsible_loan_manager = models.ForeignKey(
+        "Librarian", on_delete=models.CASCADE, related_name="loan_manager_loans"
     )
-    responsavel_emprestimo = models.ForeignKey(
-        "Responsavel", on_delete=models.CASCADE, related_name="emprestimos_emprestavel"
-    )
-    bibliotecario_responsavel = models.ForeignKey(
-        "Bibliotecario",
+    responsible_librarian = models.ForeignKey(
+        "Librarian",
         on_delete=models.CASCADE,
-        related_name="emprestimos_bibliotecario_responsavel",
+        related_name="librarian_loans",
     )
-    data_emprestimo = models.DateTimeField()
-    data_devolucao = models.DateTimeField(blank=True, null=True)
-    data_devolucao_prevista = models.DateTimeField()
+    loan_date = models.DateTimeField()
+    return_date = models.DateTimeField(blank=True, null=True)
+    expected_return_date = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class Pessoa(models.Model):
-    nome = models.CharField(max_length=255)
-    sobrenome = models.CharField(max_length=255)
-    cpf = models.CharField(max_length=11)
-    data_nascimento = models.DateField()
-    logradouro = models.CharField(max_length=255, blank=True)
-    bairro = models.CharField(max_length=100, blank=True)
-    cidade = models.CharField(max_length=100, blank=True)
-    estado = models.CharField(max_length=100, blank=True)
-    cep = models.CharField(max_length=20, blank=True)
-    telefone = models.CharField(max_length=20, blank=True)
-    email = models.CharField(max_length=100)
+# Modelo de Pessoa
+class Person(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    document = models.CharField(max_length=11)
+    birth_date = models.DateField()
+    full_adress = models.CharField(max_length=255)
+    city = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=100, blank=True)
+    postal_code = models.CharField(max_length=20)
+    phone = models.CharField(max_length=20)
+    email = models.CharField(max_length=100, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class Responsavel(models.Model):
-    nome = models.CharField(max_length=100)
-    sobrenome = models.CharField(max_length=100)
+# Modelo de Responsável (para quando Pessoa for menor de idade)
+class Responsible(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
     cpf = models.CharField(max_length=20)
-    data_nascimento = models.DateField()
-    logradouro = models.CharField(max_length=100, blank=True)
-    bairro = models.CharField(max_length=100, blank=True)
-    cidade = models.CharField(max_length=100, blank=True)
-    estado = models.CharField(max_length=100, blank=True)
-    cep = models.CharField(max_length=20, blank=True)
-    telefone = models.CharField(max_length=20, blank=True)
-    email = models.CharField(max_length=255)
+    birth_date = models.DateField()
+    full_adress = models.CharField(max_length=255, blank=True)
+    city = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=100, blank=True)
+    postal_code = models.CharField(max_length=20, blank=True)
+    phone = models.CharField(max_length=20)
+    email = models.CharField(max_length=255, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class Bibliotecario(models.Model):
-    nome = models.CharField(max_length=100)
-    sobrenome = models.CharField(max_length=100)
-    cpf = models.CharField(max_length=20)
-    idade = models.IntegerField()
-    logradouro = models.CharField(max_length=100, blank=True)
-    bairro = models.CharField(max_length=100, blank=True)
-    cidade = models.CharField(max_length=100, blank=True)
-    estado = models.CharField(max_length=100, blank=True)
-    cep = models.CharField(max_length=20, blank=True)
-    telefone = models.CharField(max_length=20, blank=True)
-    email = models.CharField(max_length=100)
+# Modelo de Bibliotecário
+class Librarian(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    document = models.CharField(max_length=20)
+    birth_date = models.DateField()
+    full_adress = models.CharField(max_length=255)
+    city = models.CharField(max_length=100, blank=True)
+    state = models.CharField(max_length=100, blank=True)
+    postal_code = models.CharField(max_length=20)
+    phone = models.CharField(max_length=20)
+    email = models.CharField(max_length=100, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
-class EmprestimoResponsavel(models.Model):
-    emprestimo = models.ForeignKey(
-        Emprestimo, on_delete=models.CASCADE, related_name="responsaveis_emprestimo"
+# EmprestimoResponsavel, para vincular um responsável a um empréstimo
+class LoanResponsible(models.Model):
+    loan = models.ForeignKey(
+        Loan, on_delete=models.CASCADE, related_name="loan_responsibles"
     )
-    responsavel = models.ForeignKey(
-        Responsavel, on_delete=models.CASCADE, related_name="emprestimos_responsavel"
+    responsible = models.ForeignKey(
+        Responsible, on_delete=models.CASCADE, related_name="loan_responsibles"
     )
 
 
-class EmprestimoBibliotecario(models.Model):
-    emprestimo = models.ForeignKey(
-        Emprestimo, on_delete=models.CASCADE, related_name="bibliotecarios_emprestimo"
+# EmprestimoBibliotecario, para vincular um bibliotecário a um empréstimo
+class LoanLibrarian(models.Model):
+    loan = models.ForeignKey(
+        Loan, on_delete=models.CASCADE, related_name="loan_librarians"
     )
-    bibliotecario = models.ForeignKey(
-        Bibliotecario,
+    librarian = models.ForeignKey(
+        Librarian,
         on_delete=models.CASCADE,
-        related_name="emprestimos_bibliotecario",
+        related_name="loan_librarians",
     )

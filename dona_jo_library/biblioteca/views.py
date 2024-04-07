@@ -5,5 +5,4 @@ from django.http import HttpResponse
 
 
 def home(request):
-
-    return HttpResponse()
+    return render(request, "biblioteca/home.html")
