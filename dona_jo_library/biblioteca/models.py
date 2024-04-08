@@ -12,22 +12,23 @@ class Book(models.Model):
     description = models.CharField(max_length=255, blank=True)
     year = models.CharField(max_length=10, blank=True)
     genre = models.CharField(max_length=40, blank=True)
-    status = models.IntegerField(blank=True)
+    status = models.CharField(
+        max_length=40, blank=True
+    )  # status para dizer se está emprestado ou não
     rating = models.CharField(max_length=50, blank=True)
-    item_type = models.CharField(max_length=50)
+    item_type = models.CharField(
+        max_length=50
+    )  # atributo existente na plhanilha do andré
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
 # Modelo para empréstimos
 class Loan(models.Model):
-    status = models.CharField(max_length=100)
+    status = models.CharField(max_length=100)  # para status do empréstimo, ex: atrasado
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="loans")
     person = models.ForeignKey(
         "Person", on_delete=models.CASCADE, related_name="person_loans"
-    )
-    responsible_loan_manager = models.ForeignKey(
-        "Librarian", on_delete=models.CASCADE, related_name="loan_manager_loans"
     )
     responsible_librarian = models.ForeignKey(
         "Librarian",
@@ -53,6 +54,7 @@ class Person(models.Model):
     postal_code = models.CharField(max_length=20)
     phone = models.CharField(max_length=20)
     email = models.CharField(max_length=100, blank=True)
+    responible_document = models.CharField(max_length=11, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
