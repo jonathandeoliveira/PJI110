@@ -2,7 +2,7 @@ from django.db import models
 
 
 # Modelo para Livros
-class Book(models.Model):
+class Books(models.Model):
     title = models.CharField(max_length=100)
     ean_isbn13 = models.CharField(max_length=13, blank=True)
     upc_isbn10 = models.CharField(max_length=10, blank=True)
@@ -14,26 +14,30 @@ class Book(models.Model):
     genre = models.CharField(max_length=40, blank=True)
     status = models.CharField(
         max_length=40, blank=True
-    )  # status para dizer se está emprestado ou não
+    )  # status para dizer se está emprestado ou não, ou algum outro status
     rating = models.CharField(max_length=50, blank=True)
     item_type = models.CharField(
         max_length=50
-    )  # atributo existente na plhanilha do andré
+    )  # atributo existente na planilha do André
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name = "Book"
+        verbose_name_plural = "Books"
+
 
 # Modelo para empréstimos
-class Loan(models.Model):
+class Loans(models.Model):
     status = models.CharField(max_length=100)  # para status do empréstimo, ex: atrasado
-    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="loans")
+    book = models.ForeignKey(Books, on_delete=models.CASCADE, related_name="loans")
     person = models.ForeignKey(
-        "Person", on_delete=models.CASCADE, related_name="person_loans"
+        "Persons", on_delete=models.CASCADE, related_name="person_loans"
     )
     responsible_librarian = models.ForeignKey(
-        "Librarian",
+        "Librarians",
         on_delete=models.CASCADE,
-        related_name="librarian_loans",
+        related_name="loan_responsible_librarian",
     )
     loan_date = models.DateTimeField()
     return_date = models.DateTimeField(blank=True, null=True)
@@ -41,31 +45,39 @@ class Loan(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name = "Loan"
+        verbose_name_plural = "Loans"
+
 
 # Modelo de Pessoa
-class Person(models.Model):
+class Persons(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     document = models.CharField(max_length=11)
     birth_date = models.DateField()
-    full_adress = models.CharField(max_length=255)
+    full_address = models.CharField(max_length=255)
     city = models.CharField(max_length=100, blank=True)
     state = models.CharField(max_length=100, blank=True)
     postal_code = models.CharField(max_length=20)
     phone = models.CharField(max_length=20)
     email = models.CharField(max_length=100, blank=True)
-    responible_document = models.CharField(max_length=11, blank=True)
+    responsible_document = models.CharField(max_length=11, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name = "Person"
+        verbose_name_plural = "Persons"
+
 
 # Modelo de Responsável (para quando Pessoa for menor de idade)
-class Responsible(models.Model):
+class Responsibles(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     cpf = models.CharField(max_length=20)
     birth_date = models.DateField()
-    full_adress = models.CharField(max_length=255, blank=True)
+    full_address = models.CharField(max_length=255, blank=True)
     city = models.CharField(max_length=100, blank=True)
     state = models.CharField(max_length=100, blank=True)
     postal_code = models.CharField(max_length=20, blank=True)
@@ -74,14 +86,18 @@ class Responsible(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name = "Responsible"
+        verbose_name_plural = "Responsibles"
+
 
 # Modelo de Bibliotecário
-class Librarian(models.Model):
+class Librarians(models.Model):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     document = models.CharField(max_length=20)
     birth_date = models.DateField()
-    full_adress = models.CharField(max_length=255)
+    full_address = models.CharField(max_length=255)
     city = models.CharField(max_length=100, blank=True)
     state = models.CharField(max_length=100, blank=True)
     postal_code = models.CharField(max_length=20)
@@ -90,24 +106,34 @@ class Librarian(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        verbose_name = "Librarian"
+        verbose_name_plural = "Librarians"
+
 
 # EmprestimoResponsavel, para vincular um responsável a um empréstimo
-class LoanResponsible(models.Model):
+class LoanResponsibles(models.Model):
     loan = models.ForeignKey(
-        Loan, on_delete=models.CASCADE, related_name="loan_responsibles"
+        Loans, on_delete=models.CASCADE, related_name="loan_responsibles"
     )
     responsible = models.ForeignKey(
-        Responsible, on_delete=models.CASCADE, related_name="loan_responsibles"
+        Responsibles, on_delete=models.CASCADE, related_name="loan_responsibles"
     )
+
+    class Meta:
+        verbose_name = "LoanResponsible"
+        verbose_name_plural = "LoanResponsibles"
 
 
 # EmprestimoBibliotecario, para vincular um bibliotecário a um empréstimo
-class LoanLibrarian(models.Model):
+class LoanLibrarians(models.Model):
     loan = models.ForeignKey(
-        Loan, on_delete=models.CASCADE, related_name="loan_librarians"
+        Loans, on_delete=models.CASCADE, related_name="loan_librarians"
     )
     librarian = models.ForeignKey(
-        Librarian,
-        on_delete=models.CASCADE,
-        related_name="loan_librarians",
+        Librarians, on_delete=models.CASCADE, related_name="loan_librarians"
     )
+
+    class Meta:
+        verbose_name = "LoanLibrarian"
+        verbose_name_plural = "LoanLibrarians"
