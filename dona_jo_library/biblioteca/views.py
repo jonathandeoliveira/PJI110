@@ -1,7 +1,4 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-
-# Create your views here.
 
 
 def home(request):
@@ -9,4 +6,4 @@ def home(request):
 
 
 def cadastrar(request):
-    return HttpResponse("teste ok")
+    return render(request, "biblioteca/cadastrar.html")

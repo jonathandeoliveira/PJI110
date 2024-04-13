@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+
+
+{% block 'title' %} Cadastrar{% endblock  %}
+  
+{% block 'body' %}
+
+<div class = "container">
+  <div class = "row">
+    <div class= "col-md-3"  ></div>
+    <div class= "col-md">
+      <h1>Cadastrar novo usuário</h1>
+      <hr>
+      <form action="{% url 'validate_user' %}" method="POST">  {% csrf_token %}
+        <label> Nome</label>
+          <input name="name" class="form-control" type="text" placeholder="John Wick"><br>
+        <label >CPF</label>
+          <input name="document" class="form-control" type="text" placeholder="123.456.789-00"><br>
+        <label> E-mail</label>
+          <input name="email" class="form-control" type="text" placeholder="john.wick@lovedogs.com"><br>
+        <label>Senha</label>
+          <input name="password" class="form-control" type="text" placeholder="***************"><br>
+        <input class ="btn btn-info" type="submit" value="Cadastrar" >
+      </form>
+    </div>
+    <div class= "col-md-3"></div>
+  </div>
+</div>
+
+
+
+
+
+
+
+{% endblock %}

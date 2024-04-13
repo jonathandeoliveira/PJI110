@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # from decouple import config, Csv
 from dj_database_url import parse as db_url
@@ -38,6 +39,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     "dona_jo_library",
     "biblioteca",
+    "users",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -61,7 +63,7 @@ ROOT_URLCONF = "dona_jo_library.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
