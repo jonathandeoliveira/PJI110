@@ -15,4 +15,4 @@ def validate_user(request):
     document = request.POST.get("document")
     email = request.POST.get("email")
     password = request.POST.get("password")
-    return HttpResponse(f"{name}{email}{document}")
+    return HttpResponse(f"{name}{email}{document}{password}")
