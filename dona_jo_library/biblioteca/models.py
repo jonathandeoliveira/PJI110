@@ -27,17 +27,25 @@ class Books(models.Model):
         verbose_name_plural = "Books"
 
 
+# class Genres(models.Model):
+#     name = models.CharField()
+
+
 # Modelo para empréstimos
 class Loans(models.Model):
     status = models.CharField(max_length=100)  # para status do empréstimo, ex: atrasado
     book = models.ForeignKey(Books, on_delete=models.CASCADE, related_name="loans")
-    person = models.ForeignKey(
-        "Persons", on_delete=models.CASCADE, related_name="person_loans"
+    person_loan = models.ForeignKey(
+        "Persons",
+        on_delete=models.CASCADE,
+        related_name="person_loans",
+        # Person.TypeUser ==  1
     )
     responsible_librarian = models.ForeignKey(
         "Librarians",
         on_delete=models.CASCADE,
         related_name="loan_responsible_librarian",
+        # Person.TypeUser ==  2
     )
     loan_date = models.DateTimeField()
     return_date = models.DateTimeField(blank=True, null=True)
