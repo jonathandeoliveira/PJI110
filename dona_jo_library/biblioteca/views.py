@@ -7,3 +7,7 @@ def home(request):
 
 def cadastrar(request):
     return render(request, "biblioteca/cadastrar.html")
+
+
+def cadastrar_livro(request):
+    return render(request, "biblioteca/cadastrar-livro.html")

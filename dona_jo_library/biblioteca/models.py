@@ -50,7 +50,7 @@ class Books(models.Model):
         verbose_name = "Book"
         verbose_name_plural = "Books"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.title
 
 

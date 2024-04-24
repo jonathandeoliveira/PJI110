@@ -24,6 +24,7 @@ class Users(models.Model):
     postal_code = models.CharField(max_length=20)
     phone = models.CharField(max_length=20)
     email = models.CharField(max_length=100, blank=True)
+    password = models.CharField(max_length=64)
     user_type = models.ForeignKey(
         UserTypes, on_delete=models.DO_NOTHING, related_name="user_types"
     )
@@ -35,4 +36,4 @@ class Users(models.Model):
         verbose_name_plural = "Users"
 
     def __str__(self):
-        return self.email
+        return self.first_name

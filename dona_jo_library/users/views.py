@@ -1,5 +1,7 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 from django.http import HttpResponse
+from users.models import Users, UserTypes
 
 
 def entrar(response):
@@ -15,4 +17,46 @@ def validate_user(request):
     document = request.POST.get("document")
     email = request.POST.get("email")
     password = request.POST.get("password")
-    return HttpResponse(f"{name}{email}")
+    first_name = request.POST.get("first_name")
+    last_name = request.POST.get("last_name")
+    birth_date = request.POST.get("birth_date")
+    full_address = request.POST.get("full_address")
+    city = request.POST.get("city")
+    state = request.POST.get("state")
+    postal_code = request.POST.get("postal_code")
+    phone = request.POST.get("phone")
+    email = request.POST.get("name")
+
+    user = Users.objects.filter(email=email)
+
+    if not (first_name and email and document):
+        return redirect("/auth/cadastrar/?status=1")
+    
+    if (len(first_name.strip()) == 0 or len(email.strip()) == 0 or len(document.strip()) == 0): 
+         return redirect("/auth/cadastrar/?status=2")
+    if len(password) < 8:
+        return redirect("/auth/cadastrar/?status=3")
+    if len(password) < 8:
+        return redirect("/auth/cadastrar/?status=4")
+    if len(user) > 0:
+        return redirect("/auth/cadastrar/?status=0")
+
+    try:
+        user = Users(
+            name=name,
+            document=document,
+            email=email,
+            password=password,
+            first_name=first_name,
+            last_name=last_name,
+            birth_date=birth_date,
+            full_address=full_address,
+            city=city,
+            state=state,
+            postal_code=postal_code,
+            phone=phone,
+        )
+        user.save()
+        return redirect("/auth/cadastrar/?status=0")
+    except:
+        return redirect("/auth/cadastrar/?status=999")
