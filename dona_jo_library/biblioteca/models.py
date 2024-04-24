@@ -50,16 +50,8 @@ class Books(models.Model):
         verbose_name = "Book"
         verbose_name_plural = "Books"
 
-
-class Status(models.Model):
-    name = models.CharField()
-    description = models.CharField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        verbose_name = "Status"
-        verbose_name_plural = "Statuses"
+    def __str__(self):
+        return self.title
 
 
 # Modelo para empréstimos

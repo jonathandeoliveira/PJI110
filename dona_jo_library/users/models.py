@@ -24,7 +24,7 @@ class Users(models.Model):
     postal_code = models.CharField(max_length=20)
     phone = models.CharField(max_length=20)
     email = models.CharField(max_length=100, blank=True)
-    user_type = models.ForeingKey(
+    user_type = models.ForeignKey(
         UserTypes, on_delete=models.DO_NOTHING, related_name="user_types"
     )
     created_at = models.DateTimeField(auto_now_add=True)
@@ -33,3 +33,6 @@ class Users(models.Model):
     class Meta:
         verbose_name = "User"
         verbose_name_plural = "Users"
+
+    def __str__(self):
+        return self.email
