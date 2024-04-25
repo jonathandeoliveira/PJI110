@@ -1,9 +1,8 @@
 from django.contrib import admin
-from django.urls import path
-
-from biblioteca.views import home
+from django.urls import path, include
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", home),
+    path("biblioteca/", include("biblioteca.urls")),
+    path("auth/", include("users.urls")),
 ]
