@@ -13,7 +13,7 @@
       <hr>
       <form action="{% url 'validate_user' %}" method="POST">  {% csrf_token %}
         <label> Nome</label>
-          <input name="name" class="form-control" type="text" placeholder="John"><br>
+          <input name="first-name" class="form-control" type="text" placeholder="John"><br>
         <label> Sobrenome</label>
           <input name="last-name" class="form-control" type="text" placeholder="Wick"><br>
         <label> Data de Nascimento</label>
@@ -21,7 +21,7 @@
         <label >CPF</label>
           <input name="document" class="form-control" type="text" placeholder="123.456.789-00"><br>
         <label> Endereço</label>
-          <input name="full-adress" class="form-control" type="text" placeholder="Rua do Centro 123"><br>
+          <input name="address" class="form-control" type="text" placeholder="Rua do Centro 123"><br>
         <label> Cidade</label>
           <input name="city" class="form-control" type="text" placeholder="São Paulo"><br>
         <label> Estado</label>
@@ -31,9 +31,9 @@
         <label> Telefone</label>
           <input name="phone-number" class="form-control" type="text" placeholder="(11)91234-5678"><br>
         <label> E-mail</label>
-          <input name="email" class="form-control" type="text" placeholder="john.wick@lovedogs.com"><br>
+          <input name="email" class="form-control" type="pas" placeholder="john.wick@lovedogs.com"><br>
         <label>Senha</label>
-          <input name="password" class="form-control" type="text" placeholder="***************"><br>
+          <input name="password" class="form-control" type="password" placeholder="***************"><br>
         <input class ="btn btn-info" type="submit" value="Cadastrar" >
       </form>
     </div>
