@@ -3,6 +3,7 @@ from users.models import Users, UserTypes
 
 
 # Tabela para os gêneros/categorias de livros
+
 class Genres(models.Model):
     name = models.CharField()
     description = models.CharField()
