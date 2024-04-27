@@ -5,4 +5,5 @@ from biblioteca import views
 urlpatterns = [
     path("cadastrar/", views.cadastrar, name="cadastrar"),
     path("home/", views.home, name="home"),
+    path("cadastrar-livro/", views.cadastrar_livro, name="cadastrar_livro"),
 ]
