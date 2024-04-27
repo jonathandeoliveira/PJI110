@@ -1,8 +1,14 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
+from django.http import HttpResponse
+from users.models import Users, UserTypes
+from biblioteca.models import Books, Loans, Genres, Status
+import traceback
+from hashlib import sha256
 
 
 def home(request):
-    return render(request, "biblioteca/home.html")
+    return render(request, "/home.html")
 
 
 def cadastrar(request):

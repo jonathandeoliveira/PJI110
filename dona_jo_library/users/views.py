@@ -3,13 +3,15 @@ from django.shortcuts import redirect
 from django.http import HttpResponse
 from users.models import Users, UserTypes
 import traceback
+from hashlib import sha256
 
 def entrar(response):
     return render(response, "users/entrar.html")
 
 
 def cadastrar(response):
-    return render(response, "users/cadastrar.html")
+    status = response.GET.get('status')
+    return render(response, "users/cadastrar.html", {'status': status})
 
 
 def validate_user(request):
@@ -40,6 +42,7 @@ def validate_user(request):
         return redirect("/auth/cadastrar/?status=0")
 
     try:
+        password = sha256(password.encode()).hexdigest()
         user = Users(
             document=document,
             email=email,
@@ -58,5 +61,18 @@ def validate_user(request):
         return redirect("/auth/cadastrar/?status=0")
     except Exception as e:
         traceback.print_exc()  # Imprime o traceback do erro
-        return  HttpResponse(f'{first_name}{last_name}{birth_date}{full_address}{city}{state}{postal_code}{document}\n{email}\n{password}\n{phone}\n{user_type}')
+        return  redirect("/auth/cadastrar/?status=4")
 
+
+def validates_login(request):
+    email = request.POST.get("email")
+    password = request.POST.get("password")
+    password = sha256(password.encode()).hexdigest()
+    user = Users.objects.filter(email = email).filter(password = password) 
+    
+    if len(user) == 0:
+        return redirect("/auth/login/?status=1")
+    elif len(user) > 0:
+        request.session['user'] = user[0].id 
+        return redirect('')
+    return HttpResponse(f'{email}{password}')

@@ -2,6 +2,7 @@ from django.db import models
 
 
 class UserTypes(models.Model):
+    id = models.BigAutoField(primary_key=True)
     user_code = models.IntegerField()
     code_description = models.CharField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -14,6 +15,7 @@ class UserTypes(models.Model):
 
 # Modelo de Usuário
 class Users(models.Model):
+    id = models.BigAutoField(primary_key=True)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     document = models.CharField(max_length=20)
