@@ -1,6 +1,9 @@
 from django.db import models
-from users.models import Users, UserTypes
-
+from users.models import UserProfile, UserTypes
+#
+from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+#
 
 # Tabela para os gêneros/categorias de livros
 class Genres(models.Model):
