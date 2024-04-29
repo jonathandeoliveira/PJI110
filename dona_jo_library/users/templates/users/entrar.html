@@ -10,6 +10,8 @@
       <h1>Acessar conta</h1>
       <hr>
       <form action="{% url 'validates_login'%} " method="POST">  {% csrf_token %}
+        <label> Usuario</label>
+        <input name="username" class="form-control" type="pas" placeholder="joao123"><br>
         <label> E-mail</label>
           <input name="email" class="form-control" type="pas" placeholder="john.wick@lovedogs.com"><br>
         <label>Senha</label>

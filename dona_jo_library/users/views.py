@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from users.models import UserProfile, UserTypes
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth import authenticate, login
 import traceback
 from hashlib import sha256
 
@@ -145,13 +146,31 @@ def validate_user(request):
         return HttpResponse("Method not allowed", status=405)
 
 
+# def validates_login(request):
+#     email = request.POST.get("email")
+#     password = request.POST.get("password")
+#     #user = UserProfile.objects.filter(email=email).first()  # Retrieve the first UserProfile object
+#     user_teste = authenticate(email = email, password = password)
+#     if user_teste is None:
+#         return redirect("/auth/login/?status=1")  
+#     elif user_teste.check_password(password):
+#         return HttpResponse(f'{email}{user_teste.password}') 
+#     else:
+#         return redirect("/auth/login/?status=2") 
+
 def validates_login(request):
     email = request.POST.get("email")
+    username = request.POST.get("username")
     password = request.POST.get("password")
-    user = UserProfile.objects.filter(email=email).first()  # Retrieve the first UserProfile object
+    
+    # Authenticate the user
+    user = authenticate(request, username= username, email= email, password=password)
+    
     if user is None:
-        return redirect("/auth/login/?status=1")  # User does not exist
-    elif user.check_password(password):
-        return HttpResponse(f'{email}{user.password}')  # Password is correct
+        # User authentication failed
+        HttpResponse(f'something went wrong') 
     else:
-        return redirect("/auth/login/?status=2")  # Password is incorrect
+        # User authentication succeeded
+        # Here, you don't need to check the password again because authenticate already did it
+        login(request, user)  # Log in the user
+        return HttpResponse(f'{email} logged in successfully') 
