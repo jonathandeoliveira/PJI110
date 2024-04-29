@@ -2,9 +2,11 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from users.models import UserProfile, UserTypes
-
+from django.contrib.auth.hashers import check_password
+from django.contrib.auth.hashers import make_password
 import traceback
 from hashlib import sha256
+
 
 #
 from django.contrib.auth.models import User
@@ -74,11 +76,12 @@ def cadastrar(response):
 #         traceback.print_exc()  # Imprime o traceback do erro
 #         return  redirect("/auth/cadastrar/?status=4")
 
-from django.contrib.auth.hashers import make_password
+
 
 def validate_user(request):
     if request.method == "POST":
         # Obter os dados do formulário
+        username =request.POST.get("username")
         first_name = request.POST.get("first-name")
         last_name = request.POST.get("last-name")
         birth_date = request.POST.get("birthdate")
@@ -110,10 +113,13 @@ def validate_user(request):
 
         try:
             # Criar um novo usuário
-            user = User.objects.create_user(
-                username=email, email=email, password=password
-            )
-            user_profile = UserProfile.objects.create(
+            # user = User.objects.create_user(
+            #    username=email, email=email, password=password
+            #)
+            #password = sha256(password.encode()).hexdigest()
+    
+            user_profile = UserProfile (
+                username = username,
                 document=document,
                 email=email,
                 first_name=first_name,
@@ -124,9 +130,10 @@ def validate_user(request):
                 state=state,
                 postal_code=postal_code,
                 phone=phone,
-                user_type=user_type,
-                user=user
+                password = password
             )
+            user_profile.set_password(password)
+            
             user_profile.save()
             
             return redirect("/auth/cadastrar/?status=0")
@@ -141,12 +148,10 @@ def validate_user(request):
 def validates_login(request):
     email = request.POST.get("email")
     password = request.POST.get("password")
-    password = sha256(password.encode()).hexdigest()
-    user = UserProfile.objects.filter(email = email).filter(password = password) 
-    
-    if len(user) == 0:
-        return redirect("/auth/login/?status=1")
-    elif len(user) > 0:
-        request.session['user'] = user[0]
-        return redirect('')
-    return HttpResponse(f'{email}{password}')
+    user = UserProfile.objects.filter(email=email).first()  # Retrieve the first UserProfile object
+    if user is None:
+        return redirect("/auth/login/?status=1")  # User does not exist
+    elif user.check_password(password):
+        return HttpResponse(f'{email}{user.password}')  # Password is correct
+    else:
+        return redirect("/auth/login/?status=2")  # Password is incorrect

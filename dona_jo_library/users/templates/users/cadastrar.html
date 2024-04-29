@@ -47,6 +47,8 @@
       <h1>Cadastrar novo usuário</h1>
       <hr>
       <form action="{% url 'validate_user' %}" method="POST">  {% csrf_token %}
+        <label> Usuário</label>
+          <input name="username" class="form-control" type="text" placeholder="Usuario"><br>
         <label> Nome</label>
           <input name="first-name" class="form-control" type="text" placeholder="John"><br>
         <label> Sobrenome</label>
