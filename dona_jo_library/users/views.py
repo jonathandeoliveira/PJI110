@@ -145,7 +145,7 @@ def validate_user(request):
     else:
         return HttpResponse("Method not allowed", status=405)
 
-
+ #FORMA 1 DE VALIDAR + AUTENTICAR 
 # def validates_login(request):
 #     email = request.POST.get("email")
 #     password = request.POST.get("password")
@@ -158,6 +158,8 @@ def validate_user(request):
 #     else:
 #         return redirect("/auth/login/?status=2") 
 
+
+# SEGUNDA FORMA DE VALIDAR
 def validates_login(request):
     email = request.POST.get("email")
     username = request.POST.get("username")
