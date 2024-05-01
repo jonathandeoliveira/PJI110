@@ -10,7 +10,6 @@ from hashlib import sha256
 def home(request):
     return render(request, "/home.html")
 
-
 def cadastrar(request):
     return render(request, "biblioteca/cadastrar.html")
 
