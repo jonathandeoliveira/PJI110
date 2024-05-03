@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from users.models import UserProfile, UserTypes
 #
 from django.contrib.auth.models import User
@@ -65,6 +66,8 @@ class Loans(models.Model):
     id = models.BigAutoField(primary_key=True)
     status = models.CharField(max_length=100)  # para status do empréstimo, ex: atrasado
     book = models.ForeignKey(Books, on_delete=models.DO_NOTHING, related_name="loans")
+    loaner = models.ForeignKey(UserProfile, on_delete=models.DO_NOTHING, related_name="loaner_loans",blank= True, null=True)
+    renter = models.ForeignKey(UserProfile, on_delete=models.DO_NOTHING, related_name="renter_loans",blank= True, null= True)
     loan_date = models.DateTimeField()
     return_date = models.DateTimeField(blank=True, null=True)
     expected_return_date = models.DateTimeField()

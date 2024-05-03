@@ -1,0 +1,63 @@
+{% extends 'index.html' %}
+
+
+{% block 'title' %} Emprestar Livro {% endblock  %}
+  
+{% block 'body' %}
+
+<div class = "container">
+  <div name= 'erros'>
+    <div>
+      {%if status == '0' %}
+      <div class="alert alert-sucess" role="alert"> 
+        Livro emprestado com sucesso!
+      </div>
+      {% endif %}
+      {%if status == '1' %}
+      <div class="alert alert-danger" role="alert"> 
+        Algum campo obrigatório não foi preenchido.
+      </div>
+      {% endif %}
+    </div>
+    <div>
+      {%if status == '2' %}
+      <div class="alert alert-danger" role="alert"> 
+        erro de status 2
+      </div>
+      {% endif %}
+    </div>
+    <div>
+      {%if status == '3' %}
+      <div class="alert alert-danger" role="alert"> 
+        erro de status 3
+      </div>
+      {% endif %}
+    </div>
+    <div>
+      {%if status == '4' %}
+      <div class="alert alert-danger" role="alert"> 
+        Erro de status 4
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  <div class = "row">
+    <div class= "col-md-3"  ></div>
+    <div class= "col-md">
+      <h1>Formulário de Empréstimo de livros:</h1>
+      <hr>
+      <form action="{% url 'validate_user' %}" method="POST">  {% csrf_token %}
+        <label> Usuário</label>
+          <input name="username" class="form-control" type="text" placeholder="Usuario"><br>
+        <label> Nome</label>
+        <input name="name" class="form-control" type="text" placeholder="Usuario"><br>
+        <a href= "{% url 'entrar' %}" class ="btn btn-info">Entrar</a>
+      </form>
+    </div>
+    <div class= "col-md-3"></div>
+  </div>
+</div>
+
+
+
+{% endblock %}

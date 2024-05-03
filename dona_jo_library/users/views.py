@@ -2,11 +2,8 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from users.models import UserProfile, UserTypes
-from django.contrib.auth.hashers import check_password
-from django.contrib.auth.hashers import make_password
-from django.contrib.auth import authenticate, login
-import traceback
-from hashlib import sha256
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 
 #
@@ -99,8 +96,9 @@ def validate_user(request):
         postal_code = request.POST.get("postal-code")
         phone = request.POST.get("phone-number")
         email = request.POST.get("email")
-        # password = request.POST.get("password") - pensar numa forma específica de alterar password
-        # user_type = UserTypes.objects.get(user_code=0)
+
+        password = request.POST.get("password")
+        #user_type = UserTypes.objects.get(user_code=2)
 
         # Verificar se todos os campos obrigatórios estão presentes
         if not all([first_name, email, document]):
@@ -170,18 +168,19 @@ def validates_login(request):
     email = request.POST.get("email")
     username = request.POST.get("username")
     password = request.POST.get("password")
-    
     # Authenticate the user
     user = authenticate(request, username= username, email= email, password=password)
-    
     if user is None:
-        # User authentication failed
-        HttpResponse(f'something went wrong') 
+        # Autenticação falhou
+        HttpResponse(f'Algo deu errado, tente novamente') 
     else:
+        login(request, user)  # Usuario conseguiu logar
+        return HttpResponse(f'{email} logado com sucesso') 
+    
         # User authentication succeeded
         # Here, you don't need to check the password again because authenticate already did it
-        login(request, user)  # Log in the user
-        return HttpResponse(f'{email} logged in successfully') 
+        #login(request, user)  # Log in the user
+        #return HttpResponse(f'{email} logged in successfully') 
     
 def update_user(request):
     
@@ -262,3 +261,9 @@ def update_user(request):
 
     else:
         return HttpResponse("Method not allowed", status=405)
+        
+@login_required(login_url='/auth/entrar/')    
+def myaccount(request):
+    user = request.user
+    user_type = user.user_type.code_description
+    return HttpResponse(f'Está autenticado como: {user.username}. Tipo de usuário: {user_type}')
