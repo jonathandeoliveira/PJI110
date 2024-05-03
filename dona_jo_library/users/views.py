@@ -22,6 +22,12 @@ def cadastrar(response):
     return render(response, "users/cadastrar.html", {'status': status})
 
 
+#antes de iniciar a alteração do cadastro, o sistema deverá perguntar o CPF ou o Username.
+def alterar_cadastro(response):
+    status = response.GET.get('status')
+    return render(response, "users/alterar_cadastro.html", {'status': status})
+
+
 # def validate_user(request):
 #     first_name = request.POST.get("first-name")
 #     last_name = request.POST.get("last-name")
@@ -90,6 +96,7 @@ def validate_user(request):
         postal_code = request.POST.get("postal-code")
         phone = request.POST.get("phone-number")
         email = request.POST.get("email")
+
         password = request.POST.get("password")
         #user_type = UserTypes.objects.get(user_code=2)
 
@@ -167,10 +174,94 @@ def validates_login(request):
         # Autenticação falhou
         HttpResponse(f'Algo deu errado, tente novamente') 
     else:
-        # User authentication succeeded
         login(request, user)  # Usuario conseguiu logar
         return HttpResponse(f'{email} logado com sucesso') 
     
+        # User authentication succeeded
+        # Here, you don't need to check the password again because authenticate already did it
+        #login(request, user)  # Log in the user
+        #return HttpResponse(f'{email} logged in successfully') 
+    
+def update_user(request):
+    
+    #aqui a aplicação busca o usuário que será alterado no banco de dados.
+    #user_profile_update= UserProfile(username) #pensar em buscar pelo CPF!!!
+    if request.method == "POST":
+        # Obter os dados do formulário
+        username =request.POST.get("username")
+        first_name = request.POST.get("first-name")
+        last_name = request.POST.get("last-name")
+        birth_date = request.POST.get("birthdate")
+        document = request.POST.get("document") 
+        full_address = request.POST.get("address")
+        city = request.POST.get("city")
+        state = request.POST.get("state")
+        postal_code = request.POST.get("postal-code")
+        phone = request.POST.get("phone-number")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        # user_type = UserTypes.objects.get(user_code=0)
+
+        # Verificar se todos os campos obrigatórios estão presentes
+        if not all([first_name, email, document]):
+            return redirect("/auth/cadastrar/?status=1")
+
+        # Validar o comprimento dos campos
+        if any(len(field.strip()) == 0 for field in [first_name, email, document]):
+            return redirect("/auth/cadastrar/?status=2")
+
+        # Validar a senha
+        # if len(password) < 8:
+        #     return redirect("/auth/cadastrar/?status=3")
+
+        # Verificar se o usuário já existe
+        # if UserProfile.objects.filter(email=email).exists():
+        #     return redirect("/auth/cadastrar/?status=0")
+
+        try:
+            # Criar um novo usuário
+            # user = User.objects.create_user(
+            #    username=email, email=email, password=password
+            #)
+            #password = sha256(password.encode()).hexdigest()
+            #user_profile_update = UserProfile.objects.filter(username=username, document=document)
+            user_profile_update = UserProfile.objects.get(username=username, document=document)
+            if user_profile_update != None: 
+                # user_profile_update = UserProfile (
+                #     # username = username,
+                #     email=email,
+                #     first_name=first_name,
+                #     last_name=last_name,
+                #     birth_date=birth_date,
+                #     full_address=full_address,
+                #     city=city,
+                #     state=state,
+                #     postal_code=postal_code,
+                #     phone=phone,
+                #     )
+                user_profile_update.email=email
+                user_profile_update.first_name=first_name
+                user_profile_update.last_name=last_name
+                user_profile_update.birth_date=birth_date
+                user_profile_update.full_address=full_address
+                user_profile_update.city=city
+                user_profile_update.state=state
+                user_profile_update.postal_code=postal_code
+                user_profile_update.phone=phone
+            # user_profile.set_password(password)
+            
+            # salva as alterações no local do user_profile
+            user_profile_update.save()
+            print(user_profile_update)
+            return HttpResponse (user_profile_update)
+            # return redirect("/auth/cadastrar/?status=0")
+        except Exception as e:
+            print(e)  # Tratar o erro apropriadamente
+            return redirect("/auth/cadastrar/?status=4")
+
+    else:
+        return HttpResponse("Method not allowed", status=405)
+        
 @login_required(login_url='/auth/entrar/')    
 def myaccount(request):
     user = request.user
