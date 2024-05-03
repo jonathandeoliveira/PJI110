@@ -1,9 +1,14 @@
 from django.db import models
-from users.models import Users, UserTypes
-
+from django.conf import settings
+from users.models import UserProfile, UserTypes
+#
+from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+#
 
 # Tabela para os gêneros/categorias de livros
 class Genres(models.Model):
+    id = models.BigAutoField(primary_key=True)
     name = models.CharField()
     description = models.CharField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -16,6 +21,7 @@ class Genres(models.Model):
 
 # status para dizer se está emprestado ou não, ou algum outro status específico: perdido, danificado, etc.
 class Status(models.Model):
+    id = models.BigAutoField(primary_key=True)
     name = models.CharField()
     description = models.CharField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -28,6 +34,7 @@ class Status(models.Model):
 
 # Modelo para Livros
 class Books(models.Model):
+    id = models.BigAutoField(primary_key=True)
     title = models.CharField(max_length=100)
     ean_isbn13 = models.CharField(max_length=13, blank=True)
     upc_isbn10 = models.CharField(max_length=10, blank=True)
@@ -56,8 +63,11 @@ class Books(models.Model):
 
 # Modelo para empréstimos
 class Loans(models.Model):
+    id = models.BigAutoField(primary_key=True)
     status = models.CharField(max_length=100)  # para status do empréstimo, ex: atrasado
     book = models.ForeignKey(Books, on_delete=models.DO_NOTHING, related_name="loans")
+    loaner = models.ForeignKey(UserProfile, on_delete=models.DO_NOTHING, related_name="loaner_loans",blank= True, null=True)
+    renter = models.ForeignKey(UserProfile, on_delete=models.DO_NOTHING, related_name="renter_loans",blank= True, null= True)
     loan_date = models.DateTimeField()
     return_date = models.DateTimeField(blank=True, null=True)
     expected_return_date = models.DateTimeField()
