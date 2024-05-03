@@ -1,5 +1,6 @@
 from django.urls import path
 from users import views
+from users.models import UserProfile, UserTypes
 
 
 urlpatterns = [

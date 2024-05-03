@@ -2,12 +2,8 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from users.models import UserProfile, UserTypes
-from django.contrib.auth.hashers import check_password
-from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-import traceback
-from hashlib import sha256
 
 
 #
@@ -175,6 +171,8 @@ def validates_login(request):
         login(request, user)  # Usuario conseguiu logar
         return HttpResponse(f'{email} logado com sucesso') 
     
-@login_required(login_url= '/auth/entrar/')    
+@login_required(login_url='/auth/entrar/')    
 def myaccount(request):
-    return HttpResponse('está autenticado')
+    user = request.user
+    user_type = user.user_type.code_description
+    return HttpResponse(f'Está autenticado como: {user.username}. Tipo de usuário: {user_type}')
