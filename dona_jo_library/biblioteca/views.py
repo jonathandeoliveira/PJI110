@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.http import HttpResponse
+from .models import Books, Genres, Status
 
 def home(request):
     return render(request, "biblioteca/home.html")
@@ -11,45 +13,37 @@ def cadastrar(request):
 def cadastrar_livro(request):
     return render(request, "biblioteca/cadastrar-livro.html")
 
-def validate_books(request):
-    title = request.POST.get("title")
-    ean_isbn13 = request.POST.get("ean_isbn13")
-    upc_isbn10 = request.POST.get("upc_isbn10")
-    author_first_name = request.POST.get("author_first_name")
-    author_last_name = request.POST.get("author_last_name")
-    publisher = request.POST.get("publisher")
-    description = request.POST.get("description")
-    year = request.POST.get("year")
-    genre = request.POST.get("genre")
-    status = request.POST.get("status")
-    rating = request.POST.get("rating")
-    item_type = request.POST.get("item_type")
 
-    book = Books.objects.filter(ean_isbn13 = ean_isbn13)
+def valida_cadastro_livro(request):
+    if request.method == 'POST':
+        # Recebendo os dados do formulário
+        title = request.POST.get("title")
+        ean_isbn13 = request.POST.get("ean_isbn13")
+        upc_isbn10 = request.POST.get("upc_isbn10")
+        author_first_name = request.POST.get("author_first_name")
+        author_last_name = request.POST.get("author_last_name")
+        publisher = request.POST.get("publisher")
+        description = request.POST.get("description")
+        year = request.POST.get("year")
+        genre_name = request.POST.get("genre")
+        status_name = request.POST.get("status")
+        rating = request.POST.get("rating")  
+        item_type = request.POST.get("item_type")  
 
-    if len(title.strip()) > 100 or title.strip() == 0:
-         return redirect("/biblioteca/cadastrar-livro/?status=2")
-    #nessa parte e nas de baixo gostaria de redirecionar pra um erro algo assim, só mantive o status=2 igual tava na validação do user
-    if ean_isbn13.strip() == 0 and upc_isbn10.strip() == 0:
-        return redirect("/biblioteca/cadastrar-livro/?status=2")
-    if ean_isbn13.strip() > 13:
-        return redirect("/biblioteca/cadastrar-livro/?status=2")
-    if upc_isbn10.strip() > 10:
-        return redirect("/biblioteca/cadastrar-livro/?status=2")
-    if author_first_name.strip() > 100 or author_first_name.strip() == 0:
-        return redirect("/biblioteca/cadastrar-livro/?status=2")
-    if author_last_name.strip() > 100 or author_last_name.strip() == 0:
-        return redirect("/biblioteca/cadastrar-livro/?status=2")
-    if publisher.strip() > 255 or publisher.strip() == 0:
-        return redirect("/biblioteca/cadastrar-livro/?status=2")
-    if year.strip() == 0:
-        return redirect("/biblioteca/cadastrar-livro/?status=2")
-    if status.strip() == 0:
-        return redirect("/biblioteca/cadastrar-livro/?status=2")
+        # Verificando se todos os campos obrigatórios estão presentes
+        if not all([title, ean_isbn13, upc_isbn10, author_first_name, author_last_name, publisher, description, year, genre_name, status_name, item_type]):
+            return HttpResponse("Todos os campos devem ser preenchidos.")
 
+        # Verificando se o gênero e o status fornecidos existem no banco de dados // Precisa cadastrar os Gêneros e Status que vamos utilizar
+        genre = Genres.objects.filter(name=genre_name).first()
+        status = Status.objects.filter(name=status_name).first()
+        
+        if not genre or not status:
+            # Se o gênero ou status não existem, retorne uma mensagem de erro
+            return HttpResponse("O gênero ou status fornecido não existe.")
 
-    try:
-        book = Books(
+        # Criando um novo objeto Books e salvando-o no banco de dados
+        new_book = Books.objects.create(
             title=title,
             ean_isbn13=ean_isbn13,
             upc_isbn10=upc_isbn10,
@@ -60,12 +54,14 @@ def validate_books(request):
             year=year,
             genre=genre,
             status=status,
-            rating=rating,
-            item_type=item_type #fiquei na duvida tbm se o item_type é analogo ao user_types ou é um campo que vai pegar no html
+            rating=rating if rating else None,
+            item_type=item_type
         )
-        book.save()
-        return redirect("/biblioteca/cadastrar-livro/?status=1")
-        #aqui tambem eu nao sei pra qual link redirecionar quando da certo
-    except Exception as e:
-        traceback.print_exc()  # Imprime o traceback do erro
-        return  HttpResponse(f'{title}{ean_isbn13}{upc_isbn10}{author_first_name}{author_last_name}{publisher}{year}{status}')
+
+        # Retornando uma mensagem de sucesso
+        return HttpResponse("Livro cadastrado com sucesso.")
+        
+    else:
+        # Se o método HTTP não for POST, retorne uma mensagem de erro
+        return HttpResponse("O método HTTP esperado é POST.")
+

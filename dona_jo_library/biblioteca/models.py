@@ -29,13 +29,14 @@ class Status(models.Model):
 
 # Modelo para Livros
 class Books(models.Model):
+    id = models.BigAutoField(primary_key=True) 
     title = models.CharField(max_length=100)
     ean_isbn13 = models.CharField(max_length=13, blank=True)
     upc_isbn10 = models.CharField(max_length=10, blank=True)
     author_first_name = models.CharField(max_length=100, blank=True)
     author_last_name = models.CharField(max_length=100, blank=True)
     publisher = models.CharField(max_length=255, blank=True)
-    description = models.CharField(max_length=255, blank=True)
+    description = models.CharField(max_length=700, blank=True)
     year = models.CharField(max_length=10, blank=True)
     genre = models.ForeignKey(Genres, on_delete=models.DO_NOTHING, related_name="genre")
     status = models.ForeignKey(
