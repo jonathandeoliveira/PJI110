@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from users.models import UserProfile, UserTypes
@@ -13,6 +13,10 @@ def cadastrar(request):
 def livros(request):
     books = Books.objects.filter(status__name='Disponivel')
     return render(request, "biblioteca/livros.html", {'books': books})
+
+def detalhes_livro(request, book_id):
+    book = get_object_or_404(Books, pk=book_id)
+    return render(request, "biblioteca/detalhes-livro.html", {'book': book})
 
 
 @login_required(login_url='/auth/entrar/') 
