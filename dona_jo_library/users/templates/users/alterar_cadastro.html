@@ -1,7 +1,7 @@
 {% extends 'index.html' %}
 
 
-{% block 'title' %} Cadastrar{% endblock  %}
+{% block 'title' %} Alterar Cadastro{% endblock  %}
   
 {% block 'body' %}
 
@@ -44,11 +44,12 @@
   <div class = "row">
     <div class= "col-md-3"  ></div>
     <div class= "col-md">
-      <h1>Cadastrar novo usuário</h1>
+      <h1>Alterar Cadastro de usuário</h1>
+      <h3> Digite apenas os campos que desejar alterar </h3>
       <hr>
-      <form action="{% url 'validate_user' %}" method="POST">  {% csrf_token %}
+      <form action="{% url 'update_user' %}" method="POST">  {% csrf_token %}
         <label> Usuário</label>
-          <input name="username" class="form-control" type="text" placeholder="Usuario"><br>
+          <input name="username" class="form-control" type="text" placeholder="Novo nome de usuário"><br>
         <label> Nome</label>
           <input name="first-name" class="form-control" type="text" placeholder="John"><br>
         <label> Sobrenome</label>
@@ -69,9 +70,10 @@
           <input name="phone-number" class="form-control" type="text" placeholder="(11)91234-5678"><br>
         <label> E-mail</label>
           <input name="email" class="form-control" type="pas" placeholder="john.wick@lovedogs.com"><br>
+        <p> Digite sua senha para confirmar as alterações </p>
         <label>Senha</label>
           <input name="password" class="form-control" type="password" placeholder="***************"><br>
-        <input class ="btn btn-info" type="submit" value="Cadastrar" >
+        <input class ="btn btn-info" type="submit" value="Alterar" >
         <a href= "{% url 'entrar' %}" class ="btn btn-info">Entrar</a>
       </form>
     </div>
