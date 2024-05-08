@@ -18,7 +18,6 @@ class Genres(models.Model):
         verbose_name = "Genre"
         verbose_name_plural = "Genres"
 
-
 # status para dizer se está emprestado ou não, ou algum outro status específico: perdido, danificado, etc.
 class Status(models.Model):
     id = models.BigAutoField(primary_key=True)

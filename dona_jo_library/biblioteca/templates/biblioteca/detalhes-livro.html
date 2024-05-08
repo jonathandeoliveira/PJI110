@@ -1,1 +1,39 @@
-teste ok
+{% extends 'index.html' %}
+
+{% block 'title' %} Detalhes do livro {% endblock %}
+
+{% block 'body' %}
+ <dl>
+    <dt>Titulo:</dt>
+    <dd>{{ book.title }}</dd>
+    <dt>Autor:</dt>
+    <dd>{{ book.author_first_name}} {{ book.author_last_name}} </dd>
+    <dt>Gênero</dt>
+    <dd>{{ book.genre.name }}</dd>
+    <dt>Status:</dt>
+    <dd>{{ book.status.name }}</dd>
+    <dt>EAN ISBN13:</dt>
+    <dd>{{ book.ean_isbn13 }}</dd>
+    <dt>UPC ISBN10:</dt>
+    <dd>{{ book.upc_isbn10 }}</dd>
+    <dt>Editora:</dt>
+    <dd>{{ book.publisher }}</dd>
+    <dt>Ano de Publicação:</dt>
+    <dd>{{ book.year }}</dd>
+    <dt>Classificação Etária:</dt>
+    <dd>{{ book.rating }}</dd>
+    <dt>Descrição:</dt>
+    <dd>{{ book.description }}</dd>
+</dl>
+
+{% if user.is_authenticated %}
+    {% if user.user_type.code_description == 'Bibliotecario' %}
+        {% if book.status.name == 'Disponivel' %}
+            <a class="btn btn-primary" href="{% url 'emprestimos' %}" role="button"> Cadastrar Empréstimo </a>
+        {% endif %}
+        {% if book.status.name == 'Emprestado' %}
+            <a class="btn btn-primary" href="{% url 'livros' %}" role="button"> Cadastrar Devolução </a>
+        {% endif %}
+    {% endif %}
+{% endif %}
+{% endblock %}

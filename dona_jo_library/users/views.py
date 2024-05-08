@@ -96,9 +96,8 @@ def validate_user(request):
         postal_code = request.POST.get("postal-code")
         phone = request.POST.get("phone-number")
         email = request.POST.get("email")
-
         password = request.POST.get("password")
-        #user_type = UserTypes.objects.get(user_code=2)
+        #user_type = UserTypes.objects.get(user_code=2)            ### DISCUTIR REGRA DE CADASTRO COM O ANDRÉ
 
         # Verificar se todos os campos obrigatórios estão presentes
         if not all([first_name, email, document]):
