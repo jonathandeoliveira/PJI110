@@ -45,7 +45,7 @@
   <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md">
-        <h1>Formulário de Empréstimo do livro: </h1>
+        <h1>Formulário de Empréstimo do livro: {{ book.title}} </h1>
         <hr>
         <form action="{% url 'validate_user' %}" method="POST">  
             {% csrf_token %}
