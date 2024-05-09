@@ -45,7 +45,7 @@
   <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md">
-        <h1>Formulário de Empréstimo de livros:</h1>
+        <h1>Formulário de Empréstimo do livro: </h1>
         <hr>
         <form action="{% url 'validate_user' %}" method="POST">  
             {% csrf_token %}
@@ -94,11 +94,11 @@
 {% endblock %}
 
 
-{% comment %} class Loans(models.Model):
+ class Loans(models.Model):
     >> status << passar por default : Emprestado 
     book = models.ForeignKey(Books, on_delete=models.DO_NOTHING, related_name="loans")
     loaner = models.ForeignKey(UserProfile, on_delete=models.DO_NOTHING, related_name="loaner_loans",blank= True, null=True)
     >> parametro << renter = models.ForeignKey(UserProfile, on_delete=models.DO_NOTHING, related_name="renter_loans",blank= True, null= True)
     loan_date = models.DateTimeField()
     return_date = models.DateTimeField(blank=True, null=True) sadaspkodaskpodopas
-    expected_return_date = models.DateTimeField() {% endcomment %} 
+    expected_return_date = models.DateTimeField()  

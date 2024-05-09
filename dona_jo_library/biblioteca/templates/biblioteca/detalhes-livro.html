@@ -29,7 +29,7 @@
 {% if user.is_authenticated %}
     {% if user.user_type.code_description == 'Bibliotecario' %}
         {% if book.status.name == 'Disponivel' %}
-            <a class="btn btn-primary" href="{% url 'emprestimos' %}" role="button"> Cadastrar Empréstimo </a>
+            <a class="btn btn-primary" href="{% url 'emprestimos' book.id %}" role="button">Cadastrar Empréstimo</a>
         {% endif %}
         {% if book.status.name == 'Emprestado' %}
             <a class="btn btn-primary" href="{% url 'livros' %}" role="button"> Cadastrar Devolução </a>

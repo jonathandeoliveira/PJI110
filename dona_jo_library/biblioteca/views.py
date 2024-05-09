@@ -45,10 +45,12 @@ def detalhes_livro(request, book_id):
 
 
 @login_required(login_url='/auth/entrar/') 
-def emprestimos(request):
+def emprestimos(request,book_id):
+    book = get_object_or_404(Books, pk=book_id)
     renters = UserProfile.objects.filter(user_type__code_description='Usuario')
     context = {
         'renters': renters,
+        'book': book,
     }
     # Verificar se o usuário está autenticado e tem um perfil de usuário
     if request.user.is_authenticated and hasattr(request.user, 'user_type') and request.user.user_type is not None: 
@@ -58,7 +60,7 @@ def emprestimos(request):
                 # Processar os dados do formulário de empréstimo
                 # Aqui você pode acessar os dados do formulário usando request.POST
                 # Por exemplo:
-                book_id = request.POST.get('book_id')
+                #book_id = request.POST.get('book_id')
                 loan_date = request.POST.get('loan_date')
                 # Processar outros campos do formulário conforme necessário
 

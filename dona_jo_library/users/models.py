@@ -57,7 +57,7 @@ class UserTypes(models.Model):
 class UserProfile(AbstractUser):
     document = models.CharField(max_length=20)
     birth_date = models.DateField()
-    full_address = models.CharField(max_length=255)
+    full_address = models.CharField(max_length=260)
     city = models.CharField(max_length=100, blank=True)
     state = models.CharField(max_length=100, blank=True)
     postal_code = models.CharField(max_length=20)
@@ -65,7 +65,7 @@ class UserProfile(AbstractUser):
     user_type = models.ForeignKey(UserTypes, on_delete=models.DO_NOTHING, related_name="user_type", null=True)
     email = models.CharField(max_length=100, unique=True, blank=True)
     
-    REQUIRED_FIELDS = ['document', 'birth_date', 'full_address', 'postal_code', 'phone']
+    REQUIRED_FIELDS = ['document', 'birth_date', 'full_address', 'postal_code', 'phone','email']
 
     USERNAME_FIELD = 'username'
 
