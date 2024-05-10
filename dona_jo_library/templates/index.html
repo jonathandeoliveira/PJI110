@@ -21,16 +21,35 @@
 
   <header class="header">
     <img class="header-img" src="https://i.imgur.com/EuPMw6T.jpg"/>
-
   </header>
+
   <main>
     <div class="main-top">
-    teste
+        <select class="menu" name="cadastro">
+          <option value = "cadastro de livros">
+            <a href="#0">Cadastro de Livros</a>
+          </option>
+          <option value = "cadastro de usuarios">
+            <a href="#0">Cadastro de Usuarios</a>
+          </option>
+        </select>
+        <select class="menu" name="atualizaçao">
+          <option value = "atualizacao de Livros">
+            <a href="#0">Atualização de Livros</a>
+          </option>
+          <option value = "atualizacao de usuarios">
+            <a href="#0">Atualização de Usuarios</a>
+          </option>
+        </select>
+        <a class="menu" href="#0">Empréstimo</a>
+        <a class="menu" href="#0">Devolução</a>
+        <a class="menu" href="#0">Login</a>
     </div>
     {% block content %}{% endblock %}
   </main>
-  <footer class="footer">
-    testee
+  <footer>
+    <a href="https://rnbc.org.br/redes/literasampa-sp/" target="_blank"><img class="footer-img" src="https://i.imgur.com/57vu6eu.jpg"/>
+    <a href="https://www.instagram.com/bcdonaleonor/" target="_blank"><img class="footer-img" src="https://i.imgur.com/XjchrUQ.png"/></a>
   </footer>
   </body>
 </html>
