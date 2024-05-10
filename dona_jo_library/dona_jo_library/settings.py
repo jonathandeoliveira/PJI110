@@ -36,6 +36,8 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+AUTH_USER_MODEL = 'users.UserProfile'
+
 INSTALLED_APPS = [
     "dona_jo_library",
     "biblioteca",
