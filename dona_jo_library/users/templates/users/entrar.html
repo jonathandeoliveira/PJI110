@@ -3,25 +3,26 @@
 {% block 'title' %} Entrar {% endblock  %}
 
 {% block content %}
-
-<div class = "container">
-  <div class = "row">
-    <div class= "col-md-3"  ></div>
-    <div class= "col-md">
-      <h1>Acessar conta</h1>
-      <hr>
-      <form action="{% url 'validates_login'%} " method="POST">  {% csrf_token %}
-        <label> Usuario</label>
-        <input name="username" class="form-control" type="pas" placeholder="joao123"><br>
-        <label> E-mail</label>
-          <input name="email" class="form-control" type="pas" placeholder="john.wick@lovedogs.com"><br>
-        <label>Senha</label>
-          <input name="password" class="form-control" type="password" placeholder="***************"><br>
-        <input class ="btn btn-info" type="submit" value="Entrar" >
-        <a href= "{% url 'cadastrar' %}" class ="btn btn-info">Cadastre-se</a>
-      </form>
+<div class="formulario">
+  <div class = "container">
+    <div class = "row">
+      <div class= "col-md-3"  ></div>
+      <div class= "col-md">
+        <h1>Acessar conta</h1>
+        <hr>
+        <form action="{% url 'validates_login'%} " method="POST">  {% csrf_token %}
+          <label> Usuario</label>
+          <input name="username" class="form-control" type="pas" placeholder="joao123"><br>
+          <label> E-mail</label>
+            <input name="email" class="form-control" type="pas" placeholder="john.wick@lovedogs.com"><br>
+          <label>Senha</label>
+            <input name="password" class="form-control" type="password" placeholder="***************"><br>
+          <input class="button" class ="btn btn-info" type="submit" value="Entrar" >
+          <a class="button" href= "{% url 'cadastrar' %}" class ="btn btn-info">Cadastre-se</a>
+        </form>
+      </div>
+      <div class= "col-md-3"></div>
     </div>
-    <div class= "col-md-3"></div>
   </div>
 </div>
 {% endblock %}
