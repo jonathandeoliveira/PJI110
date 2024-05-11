@@ -6,6 +6,7 @@ from biblioteca.models import Books, Loans, Genres, Status
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+import datetime
 
 def cadastrar(request):
     return render(request, "biblioteca/cadastrar.html")
@@ -45,42 +46,52 @@ def detalhes_livro(request, book_id):
 
 
 @login_required(login_url='/auth/entrar/') 
-def emprestimos(request,book_id):
+def emprestimos(request, book_id):
+    # Obter o objeto do livro com base no book_id fornecido na URL
     book = get_object_or_404(Books, pk=book_id)
+    if book.status.name == 'Emprestado':
+        return HttpResponse('Este livro já está emprestado.')
+    # Obter todos os usuários do tipo 'Usuario' para exibir como locatários no formulário
     renters = UserProfile.objects.filter(user_type__code_description='Usuario')
+    
+    # Contexto para passar para o template
     context = {
         'renters': renters,
         'book': book,
     }
+
     # Verificar se o usuário está autenticado e tem um perfil de usuário
     if request.user.is_authenticated and hasattr(request.user, 'user_type') and request.user.user_type is not None: 
         # Verificar se o usuário é um bibliotecário
         if request.user.user_type.user_code == 1:
             if request.method == 'POST':
-                # Processar os dados do formulário de empréstimo
-                # Aqui você pode acessar os dados do formulário usando request.POST
-                # Por exemplo:
-                #book_id = request.POST.get('book_id')
-                loan_date = request.POST.get('loan_date')
-                # Processar outros campos do formulário conforme necessário
+                # Obter os dados do formulário POST
+                expected_return_date = request.POST.get('expected_return_date')
+                status = request.POST.get('status')
+                renter_id = request.POST.get('renter')  # Aqui você obtém o ID do locatário selecionado no formulário
+                loan_date = datetime.datetime.now()
 
-                # Verificar se o livro existe
+                # Verificar se o locatário existe
                 try:
-                    book = Books.objects.get(pk=book_id)
-                except Books.DoesNotExist:
-                    messages.error(request, 'Livro não encontrado.')
-                    return redirect('emprestimos')
+                    renter = UserProfile.objects.get(pk=renter_id)
+                except UserProfile.DoesNotExist:
+                    messages.error(request, 'Usuário não encontrado.')
+                    return redirect('emprestimos', book_id=book_id)
 
                 # Criar o empréstimo
                 loan = Loans.objects.create(
                     book=book,
                     loaner=request.user,  # Usuário autenticado
+                    renter=renter,
                     loan_date=loan_date,
-                    # Defina outros campos do empréstimo conforme necessário
+                    expected_return_date=expected_return_date,
+                    status=status,
                 )
-
+                # Alterar o status do livro para 'Emprestado'
+                book.status = Status.objects.get(name='Emprestado')
+                book.save()
                 # Redirecionar para a página de detalhes do livro
-                return redirect('detalhes_livro', book_id=book_id)
+                return redirect('detalhes-livro', book_id=book_id)
             else:
                 return render(request, "biblioteca/emprestimos.html", context)
         else:
