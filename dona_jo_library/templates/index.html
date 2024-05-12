@@ -29,7 +29,7 @@
         <button class="dropbtn">Cadastro</button>
         <div class="dropdown-content">
           <a href="{% url 'cadastrar' %}" >Cadastro de Usuário</a>
-          <a href="{% url 'cadastrar_livro' %}">Cadastro de Livros</a>
+          <a href="{% url 'biblioteca:cadastrar_livro' %}">Cadastro de Livros</a>
         </div>
        </div>
        <div class="dropdown">
@@ -39,7 +39,7 @@
           <a href="#">Atualização de Livros</a>
         </div>
        </div>
-        <a class="menu" href="{% url 'emprestimos' %}">Empréstimo</a>
+        <a class="menu" href="{% url 'biblioteca:emprestimos' %}">Empréstimo</a>
         <a class="menu" href="#0">Devolução</a>
         <a class="menu" href="{% url 'entrar' %}">Login</a>
     </div>

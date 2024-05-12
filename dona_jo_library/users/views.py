@@ -1,10 +1,16 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.urls import reverse
 from django.http import HttpResponse
 from users.models import UserProfile, UserTypes
+from biblioteca.urls import urlpatterns
+#from django.contrib.auth.hashers import check_password
+#from django.contrib.auth.hashers import make_password
+#from django.contrib.auth import authenticate, login
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-
+#import traceback
+#from hashlib import sha256
 
 
 #
@@ -97,9 +103,8 @@ def validate_user(request):
         postal_code = request.POST.get("postal-code")
         phone = request.POST.get("phone-number")
         email = request.POST.get("email")
-
-        password = request.POST.get("password")
-        #user_type = UserTypes.objects.get(user_code=2)
+        # password = request.POST.get("password") - pensar numa forma específica de alterar password
+        # user_type = UserTypes.objects.get(user_code=0)
 
         # Verificar se todos os campos obrigatórios estão presentes
         if not all([first_name, email, document]):
@@ -169,20 +174,22 @@ def validates_login(request):
     email = request.POST.get("email")
     username = request.POST.get("username")
     password = request.POST.get("password")
+    
     # Authenticate the user
     user = authenticate(request, username= username, email= email, password=password)
+    
     if user is None:
-        # Autenticação falhou
-        HttpResponse(f'Algo deu errado, tente novamente') 
+        # User authentication failed
+        HttpResponse(f'something went wrong') 
     else:
         login(request, user)  # Usuario conseguiu logar
-        print("Usuario logado")
-        return redirect("{% url 'home'%}")
+        url2=reverse('biblioteca:home')
+        return redirect(url2) 
     
         # User authentication succeeded
         # Here, you don't need to check the password again because authenticate already did it
-        #login(request, user)  # Log in the user
-        #return HttpResponse(f'{email} logged in successfully') 
+        login(request, user)  # Log in the user
+        return HttpResponse(f'{email} logged in successfully') 
     
 def update_user(request):
     
@@ -221,26 +228,9 @@ def update_user(request):
         #     return redirect("/auth/cadastrar/?status=0")
 
         try:
-            # Criar um novo usuário
-            # user = User.objects.create_user(
-            #    username=email, email=email, password=password
-            #)
-            #password = sha256(password.encode()).hexdigest()
-            #user_profile_update = UserProfile.objects.filter(username=username, document=document)
+           
             user_profile_update = UserProfile.objects.get(username=username, document=document)
             if user_profile_update != None: 
-                # user_profile_update = UserProfile (
-                #     # username = username,
-                #     email=email,
-                #     first_name=first_name,
-                #     last_name=last_name,
-                #     birth_date=birth_date,
-                #     full_address=full_address,
-                #     city=city,
-                #     state=state,
-                #     postal_code=postal_code,
-                #     phone=phone,
-                #     )
                 user_profile_update.email=email
                 user_profile_update.first_name=first_name
                 user_profile_update.last_name=last_name
@@ -254,9 +244,7 @@ def update_user(request):
             
             # salva as alterações no local do user_profile
             user_profile_update.save()
-            print(user_profile_update)
-            return HttpResponse (user_profile_update)
-            # return redirect("/auth/cadastrar/?status=0")
+            return redirect("/auth/cadastrar/?status=0")
         except Exception as e:
             print(e)  # Tratar o erro apropriadamente
             return redirect("/auth/cadastrar/?status=4")

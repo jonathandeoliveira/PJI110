@@ -47,7 +47,7 @@
         <h1>Alterar Cadastro de usuário</h1>
         <h3> Digite apenas os campos que desejar alterar </h3>
         <hr>
-        <form action="{% url 'update_user' %}" method="POST">  {% csrf_token %}
+        <form action="{% url 'users:update_user' %}" method="POST">  {% csrf_token %}
           <label> Usuário</label>
             <input name="username" class="form-control" type="text" placeholder="Novo nome de usuário"><br>
           <label> Nome</label>
@@ -73,8 +73,8 @@
           <p> Digite sua senha para confirmar as alterações </p>
           <label>Senha</label>
             <input name="password" class="form-control" type="password" placeholder="***************"><br>
-          <input class ="btn btn-info" type="submit" value="Alterar" >
-          <a href= "{% url 'entrar' %}" class ="btn btn-info">Entrar</a>
+          <input class="button" class ="btn btn-info" type="submit" value="Alterar" >
+            <a class= "button" href= "{% url 'users:entrar' %}" class ="btn btn-info">Entrar</a>
         </form>
       </div>
       <div class= "col-md-3"></div>

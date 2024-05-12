@@ -2,6 +2,8 @@ from django.urls import path
 from biblioteca import views
 from users.models import UserProfile, UserTypes
 
+app_name='biblioteca'
+
 urlpatterns = [
     path("cadastrar/", views.cadastrar, name="cadastrar"),
     path("home/", views.home, name="home"),

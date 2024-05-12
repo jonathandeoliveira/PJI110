@@ -10,7 +10,7 @@
       <div class= "col-md">
         <h1>Cadastrar novo livro</h1>
         <hr>
-        <form method="POST" action="{% url "valida_cadastro_livro" %}">{% csrf_token %}
+        <form method="POST" action="{% url 'biblioteca:valida_cadastro_livro' %}">{% csrf_token %}
 
           <label> Título</label>
             <input name="title" class="form-control" type="text" placeholder="Título"><br>
