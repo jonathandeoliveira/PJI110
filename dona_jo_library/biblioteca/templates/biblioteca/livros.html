@@ -3,66 +3,66 @@
 
 {% block 'title' %} Cadastrar{% endblock  %}
   
-{% block 'body' %}
+{% block content %}
 
-<div class = "container">
-  <div name= 'erros'>
-    <div>
-      {%if status == '0' %}
-      <div class="alert alert-sucess" role="alert"> 
-        Cadastro realizado com sucesso!
-      </div>
-      {% endif %}
-      {%if status == '1' %}
-      <div class="alert alert-danger" role="alert"> 
-        Os campos não podem estar vazios.
-      </div>
-      {% endif %}
-    </div>
-    <div>
-      {%if status == '2' %}
-      <div class="alert alert-danger" role="alert"> 
-        A senha deve possuir pelo menos 8 caracteres
-      </div>
-      {% endif %}
-    </div>
-    <div>
-      {%if status == '3' %}
-      <div class="alert alert-danger" role="alert"> 
-        Usuário já cadastrado.
-      </div>
-      {% endif %}
-    </div>
-    <div>
-      {%if status == '4' %}
-      <div class="alert alert-danger" role="alert"> 
-        Error 404
-      </div>
-      {% endif %}
-    </div>
+<div class="formulario">
+    <div class = "container">
+      <div name= 'erros'>
+        <div>
+          {%if status == '0' %}
+          <div class="alert alert-sucess" role="alert">
+            Cadastro realizado com sucesso!
+          </div>
+          {% endif %}
+          {%if status == '1' %}
+          <div class="alert alert-danger" role="alert">
+            Os campos não podem estar vazios.
+          </div>
+          {% endif %}
+        </div>
+        <div>
+          {%if status == '2' %}
+          <div class="alert alert-danger" role="alert">
+            A senha deve possuir pelo menos 8 caracteres
+          </div>
+          {% endif %}
+        </div>
+        <div>
+          {%if status == '3' %}
+          <div class="alert alert-danger" role="alert">
+            Usuário já cadastrado.
+          </div>
+          {% endif %}
+        </div>
+        <div>
+          {%if status == '4' %}
+          <div class="alert alert-danger" role="alert">
+            Error 404
+          </div>
+          {% endif %}
+        </div>
 
 
 
+    </div>
+        {% for book in books %}
+        <dl>
+            <dt>Produto:</dt>
+            <dd>produto1</dd>
+            <dt>teste</dt>
+            <dd>teste</dd>
+            <dt>Descrição:</dt>
+            <dd>Descrição</dd>
+            <dt>Dimensões:</dt>
+            <dd> Altura x Largura x Comprimento</dd>
+            <dt>Peso:</dt>
+            <dd>kg</dd>
+            <dt>SKU:</dt>
+            <dd>sku</dd>
+            <dt>Frágil?</dt>
+            <dd> Sim </dd>
+          </dl>
+        {% endfor %}
 </div>
-    {% for book in books %}
-    <dl>
-        <dt>Produto:</dt>
-        <dd>produto1</dd>
-        <dt>teste</dt>
-        <dd>teste</dd>
-        <dt>Descrição:</dt>
-        <dd>Descrição</dd>
-        <dt>Dimensões:</dt>
-        <dd> Altura x Largura x Comprimento</dd>
-        <dt>Peso:</dt>
-        <dd>kg</dd>
-        <dt>SKU:</dt>
-        <dd>sku</dd>
-        <dt>Frágil?</dt>
-        <dd> Sim </dd>
-      </dl>
-    {% endfor %}
-        
-
 
 {% endblock %}
