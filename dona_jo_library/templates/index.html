@@ -28,20 +28,20 @@
        <div class="dropdown">
         <button class="dropbtn">Cadastro</button>
         <div class="dropdown-content">
-          <a href="#">Cadastro de Usuário</a>
-          <a href="#">Cadastro de Livros</a>
+          <a href="{% url 'cadastrar' %}" >Cadastro de Usuário</a>
+          <a href="{% url 'cadastrar_livro' %}">Cadastro de Livros</a>
         </div>
        </div>
        <div class="dropdown">
         <button class="dropbtn">Atualização</button>
         <div class="dropdown-content">
-          <a href="#">Atualização de Usuário</a>
+          <a href="{% url 'update_user' %}">Atualização de Usuário</a>
           <a href="#">Atualização de Livros</a>
         </div>
        </div>
-        <a class="menu" href="#0">Empréstimo</a>
+        <a class="menu" href="{% url 'emprestimos' %}">Empréstimo</a>
         <a class="menu" href="#0">Devolução</a>
-        <a class="menu" href="#0">Login</a>
+        <a class="menu" href="{% url 'entrar' %}">Login</a>
     </div>
     {% block content %}{% endblock %}
   </main>

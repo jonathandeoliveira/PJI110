@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 
+
 #
 from django.contrib.auth.models import User
 from django.contrib.auth.models import AbstractUser
@@ -175,7 +176,8 @@ def validates_login(request):
         HttpResponse(f'Algo deu errado, tente novamente') 
     else:
         login(request, user)  # Usuario conseguiu logar
-        return HttpResponse(f'{email} logado com sucesso') 
+        print("Usuario logado")
+        return redirect("{% url 'home'%}")
     
         # User authentication succeeded
         # Here, you don't need to check the password again because authenticate already did it

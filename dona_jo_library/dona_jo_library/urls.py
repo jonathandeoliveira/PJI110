@@ -5,7 +5,9 @@ from . import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("biblioteca/", include("biblioteca.urls")),
+    #path("biblioteca/cadastrar-livro/", include("biblioteca.urls")),
     path("auth/", include("users.urls")),
+    #path("auth/cadastrar/", include("users.urls")),
     path("", views.home, name ='home')
 
 
