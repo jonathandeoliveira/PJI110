@@ -11,9 +11,12 @@ import datetime
 def cadastrar(request):
     return render(request, "biblioteca/cadastrar.html")
 
+
+
 def livros(request):
     books = Books.objects.all()
     return render(request, "biblioteca/livros.html", {'books': books})
+
 
 def detalhes_livro(request, book_id):
     book = get_object_or_404(Books, pk=book_id)
@@ -35,7 +38,6 @@ def emprestimos(request, book_id):
         'renters': renters,
         'book': book,
     }
-
     # Verificar se o usuário está autenticado e tem um perfil de usuário
     if request.user.is_authenticated and hasattr(request.user, 'user_type') and request.user.user_type is not None: 
         # Verificar se o usuário é um bibliotecário
@@ -69,6 +71,7 @@ def emprestimos(request, book_id):
             return HttpResponse('Acesso negado: Você não é um bibliotecário.')
     else:
         return HttpResponse('Acesso negado: Você não está autenticado ou não tem um tipo de usuário associado.')
+
 
 
 @login_required(login_url='/auth/entrar/') 
