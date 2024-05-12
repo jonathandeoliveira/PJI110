@@ -84,7 +84,6 @@ def alterar_cadastro(response):
 
 def validate_user(request):
     if request.method == "POST":
-        # Obter os dados do formulário
         username =request.POST.get("username")
         first_name = request.POST.get("first-name")
         last_name = request.POST.get("last-name")
@@ -97,31 +96,16 @@ def validate_user(request):
         phone = request.POST.get("phone-number")
         email = request.POST.get("email")
         password = request.POST.get("password")
-        #user_type = UserTypes.objects.get(user_code=2)            ### DISCUTIR REGRA DE CADASTRO COM O ANDRÉ
-
-        # Verificar se todos os campos obrigatórios estão presentes
+        #user_type = UserTypes.objects.get(user_code=2)            ### DISCUTIR REGRA DE CADASTRO COM O REPRESENTANTE DA ONG
         if not all([first_name, email, document]):
             return redirect("/auth/cadastrar/?status=1")
-
-        # Validar o comprimento dos campos
         if any(len(field.strip()) == 0 for field in [first_name, email, document]):
             return redirect("/auth/cadastrar/?status=2")
-
-        # Validar a senha
         if len(password) < 8:
             return redirect("/auth/cadastrar/?status=3")
-
-        # Verificar se o usuário já existe
         if UserProfile.objects.filter(email=email).exists():
             return redirect("/auth/cadastrar/?status=0")
-
         try:
-            # Criar um novo usuário
-            # user = User.objects.create_user(
-            #    username=email, email=email, password=password
-            #)
-            #password = sha256(password.encode()).hexdigest()
-    
             user_profile = UserProfile (
                 username = username,
                 document=document,
@@ -142,47 +126,23 @@ def validate_user(request):
             
             return redirect("/auth/cadastrar/?status=0")
         except Exception as e:
-            print(e)  # Tratar o erro apropriadamente
             return redirect("/auth/cadastrar/?status=4")
 
     else:
         return HttpResponse("Method not allowed", status=405)
 
- #FORMA 1 DE VALIDAR + AUTENTICAR 
-# def validates_login(request):
-#     email = request.POST.get("email")
-#     password = request.POST.get("password")
-#     #user = UserProfile.objects.filter(email=email).first()  # Retrieve the first UserProfile object
-#     user_teste = authenticate(email = email, password = password)
-#     if user_teste is None:
-#         return redirect("/auth/login/?status=1")  
-#     elif user_teste.check_password(password):
-#         return HttpResponse(f'{email}{user_teste.password}') 
-#     else:
-#         return redirect("/auth/login/?status=2") 
-
-
-# SEGUNDA FORMA DE VALIDAR
 def validates_login(request):
     email = request.POST.get("email")
     username = request.POST.get("username")
     password = request.POST.get("password")
-    # Authenticate the user
     user = authenticate(request, username= username, email= email, password=password)
     if user is None:
-        # Autenticação falhou
         HttpResponse(f'Algo deu errado, tente novamente') 
     else:
-        login(request, user)  # Usuario conseguiu logar
+        login(request, user)
         return HttpResponse(f'{email} logado com sucesso') 
     
-        # User authentication succeeded
-        # Here, you don't need to check the password again because authenticate already did it
-        #login(request, user)  # Log in the user
-        #return HttpResponse(f'{email} logged in successfully') 
-    
 def update_user(request):
-    
     #aqui a aplicação busca o usuário que será alterado no banco de dados.
     #user_profile_update= UserProfile(username) #pensar em buscar pelo CPF!!!
     if request.method == "POST":

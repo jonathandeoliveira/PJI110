@@ -39,7 +39,9 @@
             <a class="btn btn-primary" href="{% url 'emprestimos' book.id %}" role="button">Cadastrar Empréstimo</a>
         {% endif %}
         {% if book.status.name == 'Emprestado' %}
-            <a class="btn btn-primary" href="{% url 'livros' %}" role="button"> Cadastrar Devolução </a>
+            <form method="post" action="{% url 'devolucao' book.id %}">{% csrf_token %}
+                <button type="submit" class="btn btn-primary">Confirmar Devolução</button>
+            </form>
         {% endif %}
     {% endif %}
 {% endif %}

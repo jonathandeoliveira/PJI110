@@ -7,4 +7,5 @@ urlpatterns = [
     path('biblioteca/emprestimos/<int:book_id>/', views.emprestimos, name='emprestimos'),
     path("livros/", views.livros, name="livros"),
     path('detalhes-livro/<int:book_id>/', views.detalhes_livro, name='detalhes-livro'),
+    path('biblioteca/devolucao/<int:book_id>/', views.devolucao, name='devolucao'),
 ]
