@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+
+{% block title %}Cadastro de Livro{% endblock  %}
+
+{% block content %}
+<div class="formulario">
+  <div class = "container">
+    <div class = "row">
+      <div class= "col-md-3"  ></div>
+      <div class= "col-md">
+        <h1>Cadastrar novo livro</h1>
+        <hr>
+        <form method="POST" action="{% url "valida_cadastro_livro" %}">{% csrf_token %}
+
+          <label> Título</label>
+            <input name="title" class="form-control" type="text" placeholder="Título"><br>
+          <label>EAN ISBN 13</label>
+            <input name="ean_isbn13" class="form-control" type="text" placeholder="EAN ISBN 13"><br>
+          <label>UPC ISBN 10</label>
+            <input name="upc_isbn10" class="form-control" type="text" placeholder="UPC ISBN 10"><br>
+          <label >Nome do Autor</label>
+            <input name="author_first_name" class="form-control" type="text" placeholder="Nome do Autor"><br>
+          <label>Sobrenome do Autor</label>
+            <input name="author_last_name" class="form-control" type="text" placeholder="Sobrenome do Autor"><br>
+          <label>Editora</label>
+            <input name="publisher" class="form-control" type="text" placeholder="Editora"><br>
+          <label>Descrição</label>
+            <input name="description" class="form-control" type="text" placeholder="Descrição"><br>
+          <label>Ano</label>
+            <input name="year" class="form-control" type="text" placeholder="Ano"><br>
+          <label>Gênero</label>
+            <input name="genre" class="form-control" type="text" placeholder="Gênero"><br>
+          <label>Status</label>
+            <input name="status" class="form-control" type="#" placeholder="Status"><br>
+          <label>Avaliação</label>
+            <input name="rating" class="form-control" type="text" placeholder="Avaliação"><br>
+          <label>Item</label>
+            <input name="item_type" class="form-control" type="text" placeholder="Item"><br>
+          <input class="button" class ="btn btn-info" type="submit" value="Cadastrar Livro" >
+        </form>
+      </div>
+      <div class= "col-md-3"></div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
