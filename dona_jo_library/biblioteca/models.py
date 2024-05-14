@@ -9,7 +9,7 @@ from django.contrib.auth.models import AbstractUser
 # Tabela para os gêneros/categorias de livros
 class Genres(models.Model):
     id = models.BigAutoField(primary_key=True)
-    name = models.CharField()
+    name = models.CharField() 
     description = models.CharField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

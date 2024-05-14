@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from users.models import UserProfile, UserTypes
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-
+from django import forms
 
 #
 from django.contrib.auth.models import User
