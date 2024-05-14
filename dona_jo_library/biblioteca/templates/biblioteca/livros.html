@@ -5,64 +5,27 @@
   
 {% block content %}
 
-<div class="formulario">
-    <div class = "container">
-      <div name= 'erros'>
-        <div>
-          {%if status == '0' %}
-          <div class="alert alert-sucess" role="alert">
-            Cadastro realizado com sucesso!
-          </div>
-          {% endif %}
-          {%if status == '1' %}
-          <div class="alert alert-danger" role="alert">
-            Os campos não podem estar vazios.
-          </div>
-          {% endif %}
-        </div>
-        <div>
-          {%if status == '2' %}
-          <div class="alert alert-danger" role="alert">
-            A senha deve possuir pelo menos 8 caracteres
-          </div>
-          {% endif %}
-        </div>
-        <div>
-          {%if status == '3' %}
-          <div class="alert alert-danger" role="alert">
-            Usuário já cadastrado.
-          </div>
-          {% endif %}
-        </div>
-        <div>
-          {%if status == '4' %}
-          <div class="alert alert-danger" role="alert">
-            Error 404
-          </div>
-          {% endif %}
-        </div>
 
-
-
-    </div>
-        {% for book in books %}
-        <dl>
-            <dt>Produto:</dt>
-            <dd>produto1</dd>
-            <dt>teste</dt>
-            <dd>teste</dd>
-            <dt>Descrição:</dt>
-            <dd>Descrição</dd>
-            <dt>Dimensões:</dt>
-            <dd> Altura x Largura x Comprimento</dd>
-            <dt>Peso:</dt>
-            <dd>kg</dd>
-            <dt>SKU:</dt>
-            <dd>sku</dd>
-            <dt>Frágil?</dt>
-            <dd> Sim </dd>
-          </dl>
-        {% endfor %}
+<div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Titulo:</th>
+        <th scope="col">Autor:</th>
+        <th scope="col">Gênero:</th>
+        <th scope="col">Status:</th>
+      </tr>
+    </thead>
+      {% for book in books %}
+        <tbody>
+          <tr>
+            <td><a href="{% url 'detalhes-livro' book.id %}">{{ book.title }}</a></td>
+            <td>{{ book.author_first_name}} {{ book.author_last_name}} </td>
+            <td>{{ book.genre.name }}</td>
+            <td>{{ book.status.name }}</td>
+          </tr>
+      {% endfor %}
+  </table>
 </div>
 
 {% endblock %}
