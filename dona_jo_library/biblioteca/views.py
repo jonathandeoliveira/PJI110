@@ -5,7 +5,7 @@ from .models import Books, Genres, Status
 
 from django.shortcuts import redirect
 from django.http import HttpResponse
-from users.models import UserProfile, UserTypes
+from users.models import UserProfile
 from biblioteca.models import Books, Loans, Genres, Status
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
