@@ -183,6 +183,7 @@ def validates_login(request):
         HttpResponse(f'something went wrong') 
     else:
         login(request, user)  # Usuario conseguiu logar
+        request.session['user_logged_in'] = True
         url2=reverse('biblioteca:home')
         return redirect(url2) 
     

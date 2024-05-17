@@ -10,7 +10,7 @@
       <div class= "col-md">
         <h1>Acessar conta</h1>
         <hr>
-        <form action="{% url 'validates_login'%} " method="POST">  {% csrf_token %}
+        <form action="{% url 'users:validates_login'%} " method="POST">  {% csrf_token %}
           <label> Usuario</label>
           <input name="username" class="form-control" type="pas" placeholder="joao123"><br>
           <label> E-mail</label>
@@ -18,7 +18,7 @@
           <label>Senha</label>
             <input name="password" class="form-control" type="password" placeholder="***************"><br>
           <input class="button" class ="btn btn-info" type="submit" value="Entrar" >
-          <a class="button" href= "{% url 'cadastrar' %}" class ="btn btn-info">Cadastre-se</a>
+          <a class="button" href= "{% url 'users:cadastrar' %}" class ="btn btn-info">Cadastre-se</a>
         </form>
       </div>
       <div class= "col-md-3"></div>

@@ -2,8 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Books, Genres, Status
 
-def home(request):
-    return render(request, "biblioteca/home.html")
+
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from users.models import UserProfile, UserTypes
@@ -11,6 +10,10 @@ from biblioteca.models import Books, Loans, Genres, Status
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
+
+def home(request):
+    user_logged_in = request.session.get('user_logged_in', False)
+    return render(request, "biblioteca/home.html", {'user_logged_in': user_logged_in})
 
 def cadastrar(request):
     return render(request, "biblioteca/cadastrar.html")

@@ -20,31 +20,55 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
 
   <header>
-    <img class="header-img" src="https://i.imgur.com/EuPMw6T.jpg"/>
+   <a href="{% url 'biblioteca:home' %}" target="_blank"><img class="header-img" src="https://i.imgur.com/EuPMw6T.jpg"/></a>
   </header>
-
-  <main>
-    <div class="main-top">
-       <div class="dropdown">
-        <button class="dropbtn">Cadastro</button>
-        <div class="dropdown-content">
-          <a href="{% url 'cadastrar' %}" >Cadastro de Usuário</a>
-          <a href="{% url 'biblioteca:cadastrar_livro' %}">Cadastro de Livros</a>
-        </div>
-       </div>
-       <div class="dropdown">
-        <button class="dropbtn">Atualização</button>
-        <div class="dropdown-content">
-          <a href="{% url 'update_user' %}">Atualização de Usuário</a>
-          <a href="#">Atualização de Livros</a>
-        </div>
-       </div>
-        <a class="menu" href="{% url 'biblioteca:emprestimos' %}">Empréstimo</a>
-        <a class="menu" href="#0">Devolução</a>
-        <a class="menu" href="{% url 'entrar' %}">Login</a>
-    </div>
-    {% block content %}{% endblock %}
-  </main>
+  
+    {% if user_logged_in %}
+        <main>
+           <div class="main-top">
+            <div class="dropdown">
+              <button class="dropbtn">Cadastro</button>
+              <div class="dropdown-content">
+                <a href="{% url 'users:cadastrar' %}" >Cadastro de Usuário</a>
+                <a href="{% url 'biblioteca:cadastrar_livro' %}">Cadastro de Livros</a>
+              </div>
+            </div>
+            <div class="dropdown">
+              <button class="dropbtn">Atualização</button>
+              <div class="dropdown-content">
+                <a href="{% url 'users:update_user' %}">Atualização de Usuário</a>
+                <a href="#">Atualização de Livros</a>
+              </div>
+            </div>
+              <a class="menu" href="{% url 'biblioteca:emprestimos' %}" >Empréstimo</a>
+              <a class="menu" href="#0">Devolução</a>
+              <a class="menu" href="{% url 'users:entrar' %}">Login</a>
+          </div>
+        </main>
+        {% else %}
+            <main>
+            <div class="main-top" style='display: none'>
+              <div class="dropdown">
+                <button class="dropbtn">Cadastro</button>
+                <div class="dropdown-content" style='display: none'>
+                  <a href="{% url 'users:cadastrar' %}" >Cadastro de Usuário</a>
+                  <a href="{% url 'biblioteca:cadastrar_livro' %}">Cadastro de Livros</a>
+                </div>
+              </div>
+              <div class="dropdown" style='display: none'>
+                <button class="dropbtn">Atualização</button>
+                <div class="dropdown-content">
+                  <a href="{% url 'users:update_user' %}">Atualização de Usuário</a>
+                  <a href="#">Atualização de Livros</a>
+                </div>
+              </div>
+                <a class="menu" href="{% url 'biblioteca:emprestimos' %}"  style='display: none'>Empréstimo</a>
+                <a class="menu" href="#0" style='display: none'>Devolução</a>
+                <a class="menu" href="{% url 'users:entrar' %}">Login</a>
+            </div>
+          </main>
+      {% endif %}
+  {% block content %}{% endblock %}
   <footer>
     <a href="https://rnbc.org.br/redes/literasampa-sp/" target="_blank"><img class="footer-img" src="https://i.imgur.com/57vu6eu.jpg"/>
     <a href="https://www.instagram.com/bcdonaleonor/" target="_blank"><img class="footer-img" src="https://i.imgur.com/XjchrUQ.png"/></a>

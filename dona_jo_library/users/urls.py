@@ -2,6 +2,7 @@ from django.urls import path, include
 from users import views
 from users.models import UserProfile, UserTypes
 
+app_name='users'
 
 urlpatterns = [
     path("entrar/", views.entrar, name="entrar"),
