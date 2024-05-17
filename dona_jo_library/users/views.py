@@ -11,6 +11,7 @@ def entrar(response):
     return render(response, "users/entrar.html")
 
 
+
 def cadastrar(response):
     status = response.GET.get('status')
     return render(response, "users/cadastrar.html", {'status': status})
@@ -71,16 +72,8 @@ def validate_user(request):
     else:
         return HttpResponse("Method not allowed", status=405)
 
-def validates_login(request):
-    email = request.POST.get("email")
-    username = request.POST.get("username")
-    password = request.POST.get("password")
-    user = authenticate(request, username= username, email= email, password=password)
-    if user is None:
-        HttpResponse(f'Algo deu errado, tente novamente') 
-    else:
-        login(request, user)
-        return HttpResponse(f'{email} logado com sucesso') 
+    
+
     
 def update_user(request):
     #aqui a aplicação busca o usuário que será alterado no banco de dados.
@@ -161,8 +154,32 @@ def update_user(request):
     else:
         return HttpResponse("Method not allowed", status=405)
         
+        
+        
+        
+def validates_login(request):
+    if request.method == 'POST':
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        user = authenticate(request, username=username, password=password)
+        
+        if user is None:
+            messages.error(request, 'Usuário ou senha inválidos. Tente novamente.')
+            return redirect('/auth/entrar/')
+        else:
+            login(request, user)
+            messages.success(request, f'{username} logado com sucesso')
+            return redirect('/')
+    return redirect('/auth/entrar/')
+    
+@login_required(login_url='/auth/entrar/')
+def sair(request):
+    logout(request)
+    messages.success(request, 'Deslogado com sucesso!')
+    return redirect('/auth/entrar/')
 
-@login_required(login_url='/auth/entrar/')    
+
+@login_required(login_url='/auth/entrar/')
 def myaccount(request):
     user = request.user
     user_type = user.user_type
@@ -172,3 +189,4 @@ def myaccount(request):
     else:
         messages.error(request, 'Você não tem permissão para acessar esta página.')
         return redirect('/auth/entrar/')
+
