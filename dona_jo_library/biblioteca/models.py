@@ -65,23 +65,9 @@ class Books(models.Model):
 class Loans(models.Model):
     id = models.BigAutoField(primary_key=True)
     status = models.CharField(max_length=100)  # para status do empréstimo, ex: atrasado
-<<<<<<< Updated upstream
     book = models.ForeignKey(Books, on_delete=models.DO_NOTHING, related_name="loans")
     loaner = models.ForeignKey(UserProfile, on_delete=models.DO_NOTHING, related_name="loaner_loans",blank= True, null=True)
     renter = models.ForeignKey(UserProfile, on_delete=models.DO_NOTHING, related_name="renter_loans",blank= True, null= True)
-=======
-    book = models.ForeignKey(Books, on_delete=models.CASCADE, related_name="loans")
-    person_loan = models.ForeignKey(
-        "Persons",
-        on_delete=models.CASCADE,
-        related_name="person_loans",
-    )
-    responsible_librarian = models.ForeignKey(
-        "Librarians",
-        on_delete=models.CASCADE,
-        related_name="loan_responsible_librarian",
-    )
->>>>>>> Stashed changes
     loan_date = models.DateTimeField()
     return_date = models.DateTimeField(blank=True, null=True)
     expected_return_date = models.DateTimeField()
