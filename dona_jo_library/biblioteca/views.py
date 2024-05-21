@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Books, Genres, Status
-
+from django.shortcuts import get_object_or_404
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from users.models import UserProfile, UserTypes
@@ -11,8 +11,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import datetime
-  
-  
+
+def home(request):
+    return render(request, "biblioteca/home.html")
+
 def cadastrar(request):
     return render(request, "biblioteca/cadastrar.html")
 
@@ -161,4 +163,54 @@ def valida_cadastro_livro(request):
     else:
         # Se o método HTTP não for POST, retorne uma mensagem de erro
         return HttpResponse("O método HTTP esperado é POST.")
+	
+# Atualiza Cadastro de Livros 
+def atualiza_livro(request):
+    return render(request, "biblioteca/atualiza-livro.html")
 
+def atualiza_cadastro_livro(request, livro_id):
+    # Obtém o livro existente do banco de dados
+    livro = get_object_or_404(Books, id=livro_id)
+
+    if request.method == "POST":
+        # Recebendo os dados do formulário
+        dados_formulario = request.POST
+
+        # Atualizando os dados do livro com base nos dados do formulário
+        livro.title = dados_formulario.get("title", livro.title)
+        livro.ean_isbn13 = dados_formulario.get("ean_isbn13", livro.ean_isbn13)
+        livro.upc_isbn10 = dados_formulario.get("upc_isbn10", livro.upc_isbn10)
+        livro.author_first_name = dados_formulario.get(
+            "author_first_name", livro.author_first_name)
+        livro.author_last_name = dados_formulario.get(
+            "author_last_name", livro.author_last_name)
+        livro.publisher = dados_formulario.get("publisher", livro.publisher)
+        livro.description = dados_formulario.get(
+            "description", livro.description)
+        livro.year = dados_formulario.get("year", livro.year)
+
+        # Verificando se o gênero e o status fornecidos existem no banco de dados
+        genre_name = dados_formulario.get("genre")
+        status_name = dados_formulario.get("status")
+        genre = Genres.objects.filter(name=genre_name).first()
+        status = Status.objects.filter(name=status_name).first()
+
+        if not genre or not status:
+            # Se o gênero ou status não existem, retorne uma mensagem de erro
+            return HttpResponse("O gênero ou status fornecido não existe.")
+
+        livro.genre = genre
+        livro.status = status
+
+        livro.rating = dados_formulario.get("rating", livro.rating)
+        livro.item_type = dados_formulario.get("item_type", livro.item_type)
+
+        # Salvando as alterações no banco de dados
+        livro.save()
+
+        # Retornando uma mensagem de sucesso
+        return HttpResponse("Livro atualizado com sucesso.")
+
+    else:
+        # Se o método HTTP não for POST, retorne uma mensagem de erro
+        return HttpResponse("O método HTTP esperado é POST.")
