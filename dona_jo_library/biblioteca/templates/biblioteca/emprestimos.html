@@ -3,61 +3,51 @@
 
 {% block 'title' %} Emprestar Livro {% endblock  %}
   
-{% block 'body' %}
+{% block content %}
 
 <div class = "container">
-  <div name= 'erros'>
-    <div>
-      {%if status == '0' %}
-      <div class="alert alert-sucess" role="alert"> 
-        Livro emprestado com sucesso!
-      </div>
-      {% endif %}
-      {%if status == '1' %}
-      <div class="alert alert-danger" role="alert"> 
-        Algum campo obrigatório não foi preenchido.
-      </div>
-      {% endif %}
-    </div>
-    <div>
-      {%if status == '2' %}
-      <div class="alert alert-danger" role="alert"> 
-        erro de status 2
-      </div>
-      {% endif %}
-    </div>
-    <div>
-      {%if status == '3' %}
-      <div class="alert alert-danger" role="alert"> 
-        erro de status 3
-      </div>
-      {% endif %}
-    </div>
-    <div>
-      {%if status == '4' %}
-      <div class="alert alert-danger" role="alert"> 
-        Erro de status 4
-      </div>
-      {% endif %}
-    </div>
+
   </div>
-  <div class = "row">
-    <div class= "col-md-3"  ></div>
-    <div class= "col-md">
-      <h1>Formulário de Empréstimo de livros:</h1>
-      <hr>
-      <form action="{% url 'validate_user' %}" method="POST">  {% csrf_token %}
-        <label> Usuário</label>
-          <input name="username" class="form-control" type="text" placeholder="Usuario"><br>
-        <label> Nome</label>
-        <input name="name" class="form-control" type="text" placeholder="Usuario"><br>
-        <a href= "{% url 'entrar' %}" class ="btn btn-info">Entrar</a>
-      </form>
+
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md">
+        <h1>Formulário de Empréstimo do livro: {{ book.title}} </h1>
+        <hr>
+        <form action="{% url 'emprestimos' book_id=book.id %}" method="POST">{% csrf_token %}
+            <label> Locatário:</label><br>
+              <input type="text" id="search" name="search" placeholder="Digite aqui para pesquisar...">
+            <div>
+              <select name="renter" id="renter">
+                <option value="">Selecione...</option> 
+                  {% for renter in renters %}
+                      <option value="{{ renter.id }}">{{ renter.email }}</option>
+                  {% endfor %}
+              </select>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+              $(document).ready(function() {
+                  $('#search').on('input', function() {
+                      var searchText = $(this).val().toLowerCase();
+                      $('#renter option').each(function() {
+                          var optionText = $(this).text().toLowerCase();
+                          var showOption = optionText.includes(searchText);
+                          $(this).toggle(showOption);
+                      });
+                  });
+              });
+            </script>
+            <br>
+            <label> Data estimada para devolução</label>
+            <input name="expected_return_date" class="form-control" type="date"><br>
+            <br>
+            <input type="hidden" id="status" name="status" value="Emprestado">
+    
+            <button type="submit" class="btn btn-info">Cadastrar Empréstimo</button>
+        </form>
     </div>
-    <div class= "col-md-3"></div>
+    <div class="col-md-3"></div>
   </div>
 </div>
-
-
-
+<a href= "{% url 'livros' %}" class ="btn btn-info">Voltar</a>
 {% endblock %}

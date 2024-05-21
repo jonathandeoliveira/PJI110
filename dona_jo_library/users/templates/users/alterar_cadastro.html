@@ -2,82 +2,83 @@
 
 
 {% block 'title' %} Alterar Cadastro{% endblock  %}
-  
-{% block 'body' %}
 
-<div class = "container">
-  <div name= 'erros'>
-    <div>
-      {%if status == '0' %}
-      <div class="alert alert-sucess" role="alert"> 
-        Cadastro realizado com sucesso!
+{% block content %}
+<div class="formulario">
+  <div class = "container">
+    <div name= 'erros'>
+      <div>
+        {%if status == '0' %}
+        <div class="alert alert-sucess" role="alert">
+          Cadastro realizado com sucesso!
+        </div>
+        {% endif %}
+        {%if status == '1' %}
+        <div class="alert alert-danger" role="alert">
+          Os campos não podem estar vazios.
+        </div>
+        {% endif %}
       </div>
-      {% endif %}
-      {%if status == '1' %}
-      <div class="alert alert-danger" role="alert"> 
-        Os campos não podem estar vazios.
+      <div>
+        {%if status == '2' %}
+        <div class="alert alert-danger" role="alert">
+          A senha deve possuir pelo menos 8 caracteres
+        </div>
+        {% endif %}
       </div>
-      {% endif %}
-    </div>
-    <div>
-      {%if status == '2' %}
-      <div class="alert alert-danger" role="alert"> 
-        A senha deve possuir pelo menos 8 caracteres
+      <div>
+        {%if status == '3' %}
+        <div class="alert alert-danger" role="alert">
+          Usuário já cadastrado.
+        </div>
+        {% endif %}
       </div>
-      {% endif %}
-    </div>
-    <div>
-      {%if status == '3' %}
-      <div class="alert alert-danger" role="alert"> 
-        Usuário já cadastrado.
+      <div>
+        {%if status == '4' %}
+        <div class="alert alert-danger" role="alert">
+          Error 404
+        </div>
+        {% endif %}
       </div>
-      {% endif %}
     </div>
-    <div>
-      {%if status == '4' %}
-      <div class="alert alert-danger" role="alert"> 
-        Error 404
+    <div class = "row">
+      <div class= "col-md-3"  ></div>
+      <div class= "col-md">
+        <h1>Alterar Cadastro de usuário</h1>
+        <h3> Digite apenas os campos que desejar alterar </h3>
+        <hr>
+        <form action="{% url 'update_user' %}" method="POST">  {% csrf_token %}
+          <label> Usuário</label>
+            <input name="username" class="form-control" type="text" placeholder="Novo nome de usuário"><br>
+          <label> Nome</label>
+            <input name="first-name" class="form-control" type="text" placeholder="John"><br>
+          <label> Sobrenome</label>
+            <input name="last-name" class="form-control" type="text" placeholder="Wick"><br>
+          <label> Data de Nascimento</label>
+            <input name="birthdate" class="form-control" type="date"><br>
+          <label >CPF</label>
+            <input name="document" class="form-control" type="text" placeholder="123.456.789-00"><br>
+          <label> Endereço</label>
+            <input name="address" class="form-control" type="text" placeholder="Rua do Centro, 123"><br>
+          <label> Cidade</label>
+            <input name="city" class="form-control" type="text" placeholder="São Paulo"><br>
+          <label> Estado</label>
+            <input name="state" class="form-control" type="text" placeholder="SP"><br>
+          <label> CEP</label>
+            <input name="postal-code" class="form-control" type="text" placeholder="01234-567"><br>
+          <label> Telefone</label>
+            <input name="phone-number" class="form-control" type="text" placeholder="(11)91234-5678"><br>
+          <label> E-mail</label>
+            <input name="email" class="form-control" type="pas" placeholder="john.wick@lovedogs.com"><br>
+          <p> Digite sua senha para confirmar as alterações </p>
+          <label>Senha</label>
+            <input name="password" class="form-control" type="password" placeholder="***************"><br>
+          <input class ="btn btn-info" type="submit" value="Alterar" >
+          <a href= "{% url 'entrar' %}" class ="btn btn-info">Entrar</a>
+        </form>
       </div>
-      {% endif %}
+      <div class= "col-md-3"></div>
     </div>
-  </div>
-  <div class = "row">
-    <div class= "col-md-3"  ></div>
-    <div class= "col-md">
-      <h1>Alterar Cadastro de usuário</h1>
-      <h3> Digite apenas os campos que desejar alterar </h3>
-      <hr>
-      <form action="{% url 'update_user' %}" method="POST">  {% csrf_token %}
-        <label> Usuário</label>
-          <input name="username" class="form-control" type="text" placeholder="Novo nome de usuário"><br>
-        <label> Nome</label>
-          <input name="first-name" class="form-control" type="text" placeholder="John"><br>
-        <label> Sobrenome</label>
-          <input name="last-name" class="form-control" type="text" placeholder="Wick"><br>
-        <label> Data de Nascimento</label>
-          <input name="birthdate" class="form-control" type="date"><br>
-        <label >CPF</label>
-          <input name="document" class="form-control" type="text" placeholder="123.456.789-00"><br>
-        <label> Endereço</label>
-          <input name="address" class="form-control" type="text" placeholder="Rua do Centro, 123"><br>
-        <label> Cidade</label>
-          <input name="city" class="form-control" type="text" placeholder="São Paulo"><br>
-        <label> Estado</label>
-          <input name="state" class="form-control" type="text" placeholder="SP"><br>
-        <label> CEP</label>
-          <input name="postal-code" class="form-control" type="text" placeholder="01234-567"><br>
-        <label> Telefone</label>
-          <input name="phone-number" class="form-control" type="text" placeholder="(11)91234-5678"><br>
-        <label> E-mail</label>
-          <input name="email" class="form-control" type="pas" placeholder="john.wick@lovedogs.com"><br>
-        <p> Digite sua senha para confirmar as alterações </p>
-        <label>Senha</label>
-          <input name="password" class="form-control" type="password" placeholder="***************"><br>
-        <input class ="btn btn-info" type="submit" value="Alterar" >
-        <a href= "{% url 'entrar' %}" class ="btn btn-info">Entrar</a>
-      </form>
-    </div>
-    <div class= "col-md-3"></div>
   </div>
 </div>
 
