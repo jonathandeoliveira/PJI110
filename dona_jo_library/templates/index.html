@@ -21,27 +21,21 @@
 
   <header>
     <div>
-     <a href="{% url 'home' %}"> <img class="header-img" src="https://i.imgur.com/EuPMw6T.jpg"/></a>
+      <a href="{% url 'home' %}"> <img class="header-img" src="https://i.imgur.com/EuPMw6T.jpg"/></a>
+      {% if user.is_authenticated %}
+        <span>Bem-vindo, {{ user.username }}</span>
+        <a class="dropdown" href="{% url 'sair' %}">Sair</a>
+      {% else %}
+        <span> Olá Visitante <a class="dropdown" href="{% url 'validates_login' %}">Entre</a> para ter acesso a mais conteúdos. </span>
+      {% endif %}
     </div>
   </header>
 
-{% comment %}
-  <nav class="main-top">
-    {% if user.is_authenticated %}
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'sair' %}">Logout</a>
-    </li>
-    {% else %}
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'validates_login' %}">Login</a>
-    </li>
-    {% endif %}
-  </nav>
-{% endcomment %}
-  
   <main>
-    {% if user.is_authenticated %}
       <div class="main-top">
+      </div>
+      <div class="main-top">
+        {% if user.is_authenticated and user.user_type.code_description == 'Bibliotecario' %}
         <div class="dropdown">
           <button class="dropbtn">Cadastro</button>
           <div class="dropdown-content">
@@ -52,38 +46,17 @@
         <div class="dropdown">
           <button class="dropbtn">Atualização</button>
           <div class="dropdown-content">
-            <a href="{% url 'update_user' %}">Atualização de Usuário</a>
+            <a href="{% url 'alterar_cadastro' %}">Atualização de Usuário</a>
             <a href="#">Atualização de Livros</a>
           </div>
         </div>
-          <a class="menu" href="{% url 'livros' %}">Livros (emprestimo e devolução)</a>
-          {% comment %}<a class="menu" href="#">Devolução</a>{% endcomment %}
-          <a class="menu" href="{% url 'sair' %}">Logout</a>
+        {%endif%}
+        <a class="menu" href="{% url 'livros' %}"> Lista de Livros</a>
       </div>
-      {%else%}
-        <div class="main-top">
-          <div class="dropdown" style='display: none'>
-            <button class="dropbtn">Cadastro</button>
-            <div class="dropdown-content">
-              <a href="#">Cadastro de Usuário</a>
-              <a href="#">Cadastro de Livros</a>
-            </div>
-          </div>
-          <div class="dropdown" style='display: none'>
-            <button class="dropbtn">Atualização</button>
-            <div class="dropdown-content">
-              <a href="#">Atualização de Usuário</a>
-              <a href="#">Atualização de Livros</a>
-            </div>
-          </div>
-            <a class="menu" href="#0" style='display: none'>Empréstimo</a>
-            <a class="menu" href="#0" style='display: none'>Devolução</a>
-            <a class="menu" href="{% url 'validates_login' %}">Login</a>
-        </div>
-    {%endif%}
+
     {% block content %}{% endblock %}
   </main>
-  <footer>
+  <footer class= 'footer'>
     <a href="https://rnbc.org.br/redes/literasampa-sp/" target="_blank"><img class="footer-img" src="https://i.imgur.com/57vu6eu.jpg"/>
     <a href="https://www.instagram.com/bcdonaleonor/" target="_blank"><img class="footer-img" src="https://i.imgur.com/XjchrUQ.png"/></a>
   </footer>

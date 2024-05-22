@@ -73,15 +73,15 @@
           <p> Digite sua senha para confirmar as alterações </p>
           <label>Senha</label>
             <input name="password" class="form-control" type="password" placeholder="***************"><br>
-          <input class ="btn btn-info" type="submit" value="Alterar" >
-          <a href= "{% url 'entrar' %}" class ="btn btn-info">Entrar</a>
+          <input class="button"  type="submit" value="Alterar" >
+          <a class="button" href= "{% url 'entrar' %}" class ="btn btn-info">Entrar</a>
+          <a class="button" href="{% url 'home' %}" role="button">Voltar</a>
+
         </form>
       </div>
       <div class= "col-md-3"></div>
     </div>
   </div>
 </div>
-
-
 
 {% endblock %}
