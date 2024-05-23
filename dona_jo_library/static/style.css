@@ -201,3 +201,25 @@ text-align: center;
      text-decoration: none;
 }
 
+
+
+.is-invalid {
+    border-color: #dc3545;
+  }
+  
+  .is-invalid + .invalid-feedback {
+    display: block;
+  }
+  
+  .invalid-feedback {
+    display: none;
+    color: #dc3545;
+  }
+  
+  .was-validated .is-invalid {
+    display: block;
+  }
+  
+  #password-error {
+    display: none;
+}
