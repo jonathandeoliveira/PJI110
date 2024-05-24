@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import HttpResponse
-from users.models import UserProfile
+from users.models import UserProfile, UserTypes
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
+import pdb
 
 def entrar(response):
     return render(response, "users/entrar.html")
@@ -13,8 +13,9 @@ def entrar(response):
 
 
 def cadastrar(response):
+    user_types = UserTypes.objects.all()
     status = response.GET.get('status')
-    return render(response, "users/cadastrar.html", {'status': status})
+    return render(response, "users/cadastrar.html", {'status': status, 'user_types': user_types})
 
 
 #antes de iniciar a alteração do cadastro, o sistema deverá perguntar o CPF ou o Username.
@@ -36,16 +37,16 @@ def validate_user(request):
         postal_code = request.POST.get("postal-code")
         phone = request.POST.get("phone-number")
         email = request.POST.get("email")
-        password = request.POST.get("password")
-        #user_type = UserTypes.objects.get(user_code=2)            ### DISCUTIR REGRA DE CADASTRO COM O REPRESENTANTE DA ONG
-        if not all([first_name, email, document]):
-            return redirect("/auth/cadastrar/?status=1")
-        if any(len(field.strip()) == 0 for field in [first_name, email, document]):
-            return redirect("/auth/cadastrar/?status=2")
-        if len(password) < 8:
-            return redirect("/auth/cadastrar/?status=3")
-        if UserProfile.objects.filter(email=email).exists():
-            return redirect("/auth/cadastrar/?status=0")
+        password = request.POST.get("password")                          
+        user_type = request.POST.get("user-type")                   # DISCUTIR REGRA DE CADASTRO COM O REPRESENTANTE DA ONG
+        #if not all([first_name, email, document]):
+            #return redirect("/auth/cadastrar/?status=1")
+        #if any(len(field.strip()) == 0 for field in [first_name, email, document]):
+            #return redirect("/auth/cadastrar/?status=2")
+        #if len(password) < 8:
+            #return redirect("/auth/cadastrar/?status=3")
+        #if UserProfile.objects.filter(email=email).exists():
+            #return redirect("/auth/cadastrar/?status=0")
         try:
             user_profile = UserProfile (
                 username = username,
@@ -59,10 +60,12 @@ def validate_user(request):
                 state=state,
                 postal_code=postal_code,
                 phone=phone,
-                password = password
+                password = password,
+                user_type = user_type
+                #pdb.set_trace()
             )
             user_profile.set_password(password)
-            
+
             user_profile.save()
             
             return redirect("/auth/cadastrar/?status=0")

@@ -27,11 +27,23 @@
           <label>Descrição</label>
             <input name="description" class="form-control" type="text" placeholder="Descrição"><br>
           <label>Ano</label>
-            <input name="year" class="form-control" type="text" placeholder="Ano"><br>
+            <input name="year" class="form-control" type="date" placeholder="Ano"><br>
+          
           <label>Gênero</label>
-            <input name="genre" class="form-control" type="text" placeholder="Gênero"><br>
-          <label>Status</label>
-            <input name="status" class="form-control" type="#" placeholder="Status"><br>
+            <select name="genre" class="form-control" required>
+            <option value="">Selecione o Gênero</option><br>
+            {% for genre in genres %}
+              <option value={{genre.name}}>{{genre.name}}</option>
+            {% endfor %}
+            </select>
+            
+            <label>Status</label>
+            <select name="status" class="form-control" required>
+            <option value="">Selecione o Status</option><br>
+            {% for status in status %}
+              <option value={{status.name}}>{{status.name}}</option>
+            {% endfor %}
+            </select>
           <label>Avaliação</label>
             <input name="rating" class="form-control" type="text" placeholder="Avaliação"><br>
           <label>Item</label>

@@ -109,8 +109,12 @@ def devolucao(request, book_id):
             return HttpResponse('Acesso negado: Você não é um bibliotecário.')
     else:
         return HttpResponse('Acesso negado: Você não está autenticado ou não tem um tipo de usuário associado.')
+
 def cadastrar_livro(request):
-    return render(request, "biblioteca/cadastrar-livro.html")
+    statuses = Status.objects.all()
+    genres = Genres.objects.all()
+    return render(request, "biblioteca/cadastrar-livro.html", {'statuses': statuses, 'genres': genres})
+
 
 
 def valida_cadastro_livro(request):
