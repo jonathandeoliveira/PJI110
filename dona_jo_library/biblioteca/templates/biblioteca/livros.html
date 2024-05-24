@@ -4,8 +4,6 @@
 {% block 'title' %} Cadastrar{% endblock  %}
   
 {% block content %}
-
-
 <div>
   <table class="table">
     <thead>
@@ -26,6 +24,6 @@
           </tr>
       {% endfor %}
   </table>
+    <a class="button" href="{% url 'home' %}" role="button">Voltar</a>
 </div>
-
 {% endblock %}

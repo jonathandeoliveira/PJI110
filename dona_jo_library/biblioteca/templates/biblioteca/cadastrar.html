@@ -1,0 +1,76 @@
+{% extends 'index.html' %}
+{% block 'titulo' %} Cadastro de bibliotecário {% endblock  %}
+{% block 'body' %}
+
+<div class="container">
+    <br>
+    <div class="row">
+
+        <div class="col-md-3">
+      
+        </div>
+
+        <div class="col-md text-center">
+
+            <h1>Cadastro de Bibliotecário</h1>
+
+            <form method="POST" action="{% url 'home' %}">{% csrf_token %}
+
+                <div class="form-group">
+                    <label for="nome">Nome</label>
+                    <input name="nome" class="form-control form-control-sm" type="text" placeholder="Nome...">
+                </div>
+                <div class="form-group">
+                    <label for="sobrenome">Sobrenome</label>
+                    <input name="sobrenome" class="form-control form-control-sm" type="text" placeholder="Sobrenome...">
+                </div>
+                <div class="form-group">
+                    <label for="cpf">CPF</label>
+                    <input name="cpf" class="form-control form-control-sm" type="text" placeholder="CPF...">
+                </div>
+                <div class="form-group">
+                    <label for="data_nascimento">Data de Nascimento</label>
+                    <input name="data_nascimento" class="form-control form-control-sm" type="text" placeholder="Data de Nascimento...">
+                </div>
+                <div class="form-group">
+                    <label for="telefone">Telefone</label>
+                    <input name="telefone" class="form-control form-control-sm" type="text" placeholder="Telefone...">
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input name="email" class="form-control form-control-sm" type="text" placeholder="E-mail...">
+                </div>
+                <div class="form-group">
+                    <label for="senha">Senha</label>
+                    <input name="senha" class="form-control form-control-sm" type="password" placeholder="Senha...">
+                </div>
+                <div class="form-group">
+                    <label for="endereco">Endereço</label>
+                    <input name="endereco" class="form-control form-control-sm" type="text" placeholder="Endereço...">
+                </div>
+                <div class="form-row">
+                    <div class="col">
+                        <label for="cidade">Cidade</label>
+                        <input name="cidade" class="form-control form-control-sm" type="text" placeholder="Cidade...">
+                    </div>
+                    <div class="col">
+                        <label for="estado">Estado</label>
+                        <input name="estado" class="form-control form-control-sm" type="text" placeholder="Estado...">
+                    </div>
+                    <div class="col">
+                        <label for="cep">CEP</label>
+                        <input name="cep" class="form-control form-control-sm" type="text" placeholder="CEP...">
+                    </div>
+                </div>
+                <br>
+                <input class="btn btn-info btn-lg" type="submit" value="Enviar">
+            </form>        
+        </div>
+
+        <div class="col-md-3">
+
+        </div>
+
+    </div>    
+</div>
+{% endblock %}

@@ -143,6 +143,8 @@ p{
     margin-right: 18px;
 }
 
+/* ------------------ footer  ------------------ */
+
 footer{
     bottom: 0;
     background-color: #FB6C0D;
@@ -160,6 +162,26 @@ footer{
     justify-content:center;
     margin-right: 20px;
 }
+
+.footer-link {
+    display: block;
+    text-align: center;
+    color: #555;
+    text-decoration: none;
+    margin-right: 15px;
+  }
+  
+  .footer-link i {
+    color: #f3f3f3;
+    margin-right: 5px;
+  }
+  
+  .footer-text {
+
+text-align: center;
+}
+
+/* -------------------- fim footer ----------------------- */
 
 .formulario{
     padding-bottom: 20px;
@@ -179,3 +201,25 @@ footer{
      text-decoration: none;
 }
 
+
+
+.is-invalid {
+    border-color: #dc3545;
+  }
+  
+  .is-invalid + .invalid-feedback {
+    display: block;
+  }
+  
+  .invalid-feedback {
+    display: none;
+    color: #dc3545;
+  }
+  
+  .was-validated .is-invalid {
+    display: block;
+  }
+  
+  #password-error {
+    display: none;
+}
