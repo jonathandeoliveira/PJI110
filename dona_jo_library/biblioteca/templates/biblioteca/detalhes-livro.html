@@ -4,13 +4,13 @@
 {% block title %} Detalhes do livro {% endblock %}
 
 {% block content %}
-    {% if messages %}
+    {% comment %} {% if messages %}
         <ul class="messages">
             {% for message in messages %}
                     <li>{{ message }}</li>
             {% endfor %}
         </ul>
-    {% endif %}
+    {% endif %} {% endcomment %}
     <dl style = ''>
         <dt>Titulo:</dt>
         <dd>{{ book.title }}</dd>
@@ -28,7 +28,7 @@
         <dd>{{ book.publisher }}</dd>
         <dt>Ano de Publicação:</dt>
         <dd>{{ book.year }}</dd>
-        <dt>Classificação Etária:</dt>
+        <dt>Avaliação:</dt>
         <dd>{{ book.rating }}</dd>
         <dt>Descrição:</dt>
         <dd>{{ book.description }}</dd>

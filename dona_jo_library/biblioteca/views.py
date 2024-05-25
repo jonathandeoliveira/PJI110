@@ -39,7 +39,8 @@ def detalhes_livro(request, book_id):
 def emprestimos(request, book_id):
     book = get_object_or_404(Books, pk=book_id)
     if book.status.name == 'Emprestado':
-        return HttpResponse('Este livro já está emprestado.')
+        messages.error(request, 'Livro já emprestado.')
+        return redirect('emprestimos', book_id=book_id)
     renters = UserProfile.objects.filter(user_type__code_description='Usuario')
     context = {
         'renters': renters,
@@ -102,10 +103,6 @@ def devolucao(request, book_id):
                 book.status = book_status_disponivel
                 book.save()
                 messages.success(request, 'Devolução registrada com sucesso!')
-
-                storage = messages.get_messages(request)
-                for message in storage:
-                    pass  # A leitura da mensagem a consome da sessão
                 return redirect('detalhes-livro', book_id=book_id)
             else:
                 return render(request, "biblioteca/detalhes-livro.html", context)
@@ -149,6 +146,9 @@ def valida_cadastro_livro(request):
         if not genre or not status:
             # Se o gênero ou status não existem, retorne uma mensagem de erro
             messages.error(request, "O gênero ou status fornecido não existe.")
+            storage = messages.get_messages(request)
+            for message in storage:
+                pass  # A leitura da mensagem a consome da sessão
             return redirect('/biblioteca/cadastrar-livro/')
 
         # Criando um novo objeto Books e salvando-o no banco de dados
@@ -168,6 +168,7 @@ def valida_cadastro_livro(request):
                 item_type=item_type
             )
             messages.success(request, "Livro cadastrado com sucesso.")
+
             return redirect('/biblioteca/cadastrar-livro/')
         except Exception as e:
             messages.error(request, f"Erro ao cadastrar o livro: {str(e)}")
@@ -215,9 +216,6 @@ def atualiza_cadastro_livro(request, book_id):
 
         # Retornando uma mensagem de sucesso
         messages.success(request, 'Devolução registrada com sucesso!')
-        storage = messages.get_messages(request)
-        for message in storage:
-            pass  # A leitura da mensagem a consome da sessão
         return redirect('detalhes-livro', book_id=book_id)
     
     else:

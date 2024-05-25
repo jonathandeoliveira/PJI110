@@ -30,7 +30,7 @@
       {% endif %}
     </div>
   </header>
-
+  
   <main>
       <div class="main-top">
       </div>
@@ -43,15 +43,25 @@
             <a href="{% url 'cadastrar_livro' %}">Cadastro de Livros</a>
           </div>
         </div>
-        <div class="dropdown">
+        {% comment %} <div class="dropdown">
           <button class="dropbtn">Atualização</button>
           <div class="dropdown-content">
             <a href="{% url 'alterar_cadastro' %}">Atualização de Usuário</a>
           </div>
-        </div>
+        </div> {% endcomment %}
         {%endif%}
         <a class="menu" href="{% url 'livros' %}"> Lista de Livros</a>
       </div>
+      <div class="container">
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
     {% block content %}{% endblock %}
   </main>

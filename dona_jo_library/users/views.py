@@ -97,45 +97,25 @@ def update_user(request):
         phone = request.POST.get("phone-number")
         email = request.POST.get("email")
         password = request.POST.get("password")
-        # user_type = UserTypes.objects.get(user_code=0)
-
         # Verificar se todos os campos obrigatórios estão presentes
-        if not all([first_name, email, document]):
-            return redirect("/auth/cadastrar/?status=1")
+        # if not all([first_name, email, document]):
+        #     return redirect("/auth/alterar_cadastro/?status=1")
 
         # Validar o comprimento dos campos
-        if any(len(field.strip()) == 0 for field in [first_name, email, document]):
-            return redirect("/auth/cadastrar/?status=2")
+        # if any(len(field.strip()) == 0 for field in [first_name, email, document]):
+        #     return redirect("/auth/alterar_cadastro/?status=2")
 
         # Validar a senha
         # if len(password) < 8:
-        #     return redirect("/auth/cadastrar/?status=3")
+        #     return redirect("/auth/alterar_cadastro/?status=3")
 
         # Verificar se o usuário já existe
         # if UserProfile.objects.filter(email=email).exists():
-        #     return redirect("/auth/cadastrar/?status=0")
+        #     return redirect("/auth/alterar_cadastro/?status=0")
 
         try:
-            # Criar um novo usuário
-            # user = User.objects.create_user(
-            #    username=email, email=email, password=password
-            #)
-            #password = sha256(password.encode()).hexdigest()
-            #user_profile_update = UserProfile.objects.filter(username=username, document=document)
             user_profile_update = UserProfile.objects.get(username=username, document=document)
             if user_profile_update != None: 
-                # user_profile_update = UserProfile (
-                #     # username = username,
-                #     email=email,
-                #     first_name=first_name,
-                #     last_name=last_name,
-                #     birth_date=birth_date,
-                #     full_address=full_address,
-                #     city=city,
-                #     state=state,
-                #     postal_code=postal_code,
-                #     phone=phone,
-                #     )
                 user_profile_update.email=email
                 user_profile_update.first_name=first_name
                 user_profile_update.last_name=last_name
@@ -181,7 +161,7 @@ def validates_login(request):
 def sair(request):
     logout(request)
     messages.success(request, 'Deslogado com sucesso!')
-    return redirect('/auth/entrar/')
+    return redirect('/')
 
 
 @login_required(login_url='/auth/entrar/')
