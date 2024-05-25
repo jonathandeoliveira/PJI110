@@ -26,6 +26,7 @@ def alterar_cadastro(response):
 
 def validate_user(request):
     if request.method == "POST":
+        # pdb.set_trace()
         username =request.POST.get("username")
         first_name = request.POST.get("first-name")
         last_name = request.POST.get("last-name")
@@ -37,8 +38,9 @@ def validate_user(request):
         postal_code = request.POST.get("postal-code")
         phone = request.POST.get("phone-number")
         email = request.POST.get("email")
-        password = request.POST.get("password")                          
+        password = request.POST.get("password")
         user_type = request.POST.get("user-type")                   # DISCUTIR REGRA DE CADASTRO COM O REPRESENTANTE DA ONG
+        user_type = UserTypes.objects.get(code_description = user_type)
         #if not all([first_name, email, document]):
             #return redirect("/auth/cadastrar/?status=1")
         #if any(len(field.strip()) == 0 for field in [first_name, email, document]):
@@ -48,6 +50,7 @@ def validate_user(request):
         #if UserProfile.objects.filter(email=email).exists():
             #return redirect("/auth/cadastrar/?status=0")
         try:
+            #pdb.set_trace()
             user_profile = UserProfile (
                 username = username,
                 document=document,
@@ -62,7 +65,6 @@ def validate_user(request):
                 phone=phone,
                 password = password,
                 user_type = user_type
-                #pdb.set_trace()
             )
             user_profile.set_password(password)
 
