@@ -1,59 +1,79 @@
 {% extends 'index.html' %}
 
-{% block title %}Cadastro de Livro{% endblock  %}
+{% block title %}Cadastro de Livro{% endblock %}
 
 {% block content %}
-<div class="formulario">
-  <div class = "container">
-    <div class = "row">
-      <div class= "col-md-3"  ></div>
-      <div class= "col-md">
-        <h1>Cadastrar novo livro</h1>
-        <hr>
-        <form method="POST" action="{% url 'valida_cadastro_livro' %}">{% csrf_token %}
+<div class="container">
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
-          <label> Título</label>
-            <input name="title" class="form-control" type="text" placeholder="Título"><br>
-          <label>EAN ISBN 13</label>
-            <input name="ean_isbn13" class="form-control" type="text" placeholder="EAN ISBN 13"><br>
-          <label>UPC ISBN 10</label>
-            <input name="upc_isbn10" class="form-control" type="text" placeholder="UPC ISBN 10"><br>
-          <label >Nome do Autor</label>
-            <input name="author_first_name" class="form-control" type="text" placeholder="Nome do Autor"><br>
-          <label>Sobrenome do Autor</label>
-            <input name="author_last_name" class="form-control" type="text" placeholder="Sobrenome do Autor"><br>
-          <label>Editora</label>
-            <input name="publisher" class="form-control" type="text" placeholder="Editora"><br>
-          <label>Descrição</label>
-            <input name="description" class="form-control" type="text" placeholder="Descrição"><br>
-          <label>Ano</label>
-            <input name="year" class="form-control" type="date" placeholder="Ano"><br>
-          
-          <label>Gênero</label>
-            <select name="genre" class="form-control" required>
-            <option value="">Selecione o Gênero</option><br>
-            {% for genre in genres %}
-              <option value={{genre.name}}>{{genre.name}}</option>
-            {% endfor %}
-            </select>
-            
-            <label>Status</label>
-            <select name="status" class="form-control" required>
-            <option value="">Selecione o Status</option><br>
-            {% for status in status %}
-              <option value={{status.name}}>{{status.name}}</option>
-            {% endfor %}
-            </select>
-          <label>Avaliação</label>
-            <input name="rating" class="form-control" type="text" placeholder="Avaliação"><br>
-          <label>Item</label>
-            <input name="item_type" class="form-control" type="text" placeholder="Item"><br>
-          <input class="button" class ="btn btn-info" type="submit" value="Cadastrar Livro" >
-        </form>
-      </div>
-      <div class= "col-md-3"></div>
+    <div class="formulario">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md">
+                    <h1>Cadastrar novo livro</h1>
+                    <hr>
+                    <form method="POST" action="{% url 'valida_cadastro_livro' %}">{% csrf_token %}
+                        <label>Título</label>
+                        <input name="title" class="form-control" type="text" placeholder="Título" required><br>
+
+                        <label>EAN ISBN 13</label>
+                        <input name="ean_isbn13" class="form-control" type="text" placeholder="EAN ISBN 13" required pattern="\d{13}"><br>
+
+                        <label>UPC ISBN 10</label>
+                        <input name="upc_isbn10" class="form-control" type="text" placeholder="UPC ISBN 10" required pattern="\d{10}"><br>
+
+                        <label>Nome do Autor</label>
+                        <input name="author_first_name" class="form-control" type="text" placeholder="Nome do Autor" required><br>
+
+                        <label>Sobrenome do Autor</label>
+                        <input name="author_last_name" class="form-control" type="text" placeholder="Sobrenome do Autor" required><br>
+
+                        <label>Editora</label>
+                        <input name="publisher" class="form-control" type="text" placeholder="Editora" required><br>
+
+                        <label>Descrição</label>
+                        <input name="description" class="form-control" type="text" placeholder="Descrição"><br>
+
+                        <label>Ano de Publicação</label>
+                        <input name="year" class="form-control" type="date" placeholder="Ano" required><br>
+
+                        <label>Gênero</label>
+                        <select name="genre" class="form-control" required>
+                            <option value="">Selecione o Gênero</option><br>
+                            {% for genre in genres %}
+                                <option value="{{ genre.name }}">{{ genre.name }}</option>
+                            {% endfor %}
+                        </select><br>
+
+                        <label>Status</label>
+                        <select name="status" class="form-control" required>
+                            <option value="">Selecione o Status</option><br>
+                            {% for status in statuses %}
+                                <option value="{{ status.name }}">{{ status.name }}</option>
+                            {% endfor %}
+                        </select><br>
+
+                        <label>Avaliação</label>
+                        <input name="rating" class="form-control" type="text" placeholder="Avaliação"><br>
+
+                        <label>Tipo de item</label>
+                        <input name="item_type" class="form-control" type="text" placeholder="Item"><br>
+
+                        <input class="button btn btn-info" type="submit" value="Cadastrar Livro">
+                    </form>
+                </div>
+                <div class="col-md-3"></div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
-
 {% endblock %}

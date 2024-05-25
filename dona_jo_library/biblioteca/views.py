@@ -102,6 +102,10 @@ def devolucao(request, book_id):
                 book.status = book_status_disponivel
                 book.save()
                 messages.success(request, 'Devolução registrada com sucesso!')
+
+                storage = messages.get_messages(request)
+                for message in storage:
+                    pass  # A leitura da mensagem a consome da sessão
                 return redirect('detalhes-livro', book_id=book_id)
             else:
                 return render(request, "biblioteca/detalhes-livro.html", context)
@@ -130,91 +134,91 @@ def valida_cadastro_livro(request):
         year = request.POST.get("year")
         genre_name = request.POST.get("genre")
         status_name = request.POST.get("status")
-        rating = request.POST.get("rating")  
-        item_type = request.POST.get("item_type")  
+        rating = request.POST.get("rating")
+        item_type = request.POST.get("item_type")
 
         # Verificando se todos os campos obrigatórios estão presentes
         if not all([title, ean_isbn13, upc_isbn10, author_first_name, author_last_name, publisher, description, year, genre_name, status_name, item_type]):
-            return HttpResponse("Todos os campos devem ser preenchidos.")
-
-        # Verificando se o gênero e o status fornecidos existem no banco de dados // Precisa cadastrar os Gêneros e Status que vamos utilizar
+            messages.error(request, "Todos os campos devem ser preenchidos.")
+            return redirect('/biblioteca/cadastrar-livro/')
+        
+        # Verificando se o gênero e o status fornecidos existem no banco de dados
         genre = Genres.objects.filter(name=genre_name).first()
         status = Status.objects.filter(name=status_name).first()
-        
+
         if not genre or not status:
             # Se o gênero ou status não existem, retorne uma mensagem de erro
-            return HttpResponse("O gênero ou status fornecido não existe.")
+            messages.error(request, "O gênero ou status fornecido não existe.")
+            return redirect('/biblioteca/cadastrar-livro/')
 
         # Criando um novo objeto Books e salvando-o no banco de dados
-        new_book = Books.objects.create(
-            title=title,
-            ean_isbn13=ean_isbn13,
-            upc_isbn10=upc_isbn10,
-            author_first_name=author_first_name,
-            author_last_name=author_last_name,
-            publisher=publisher,
-            description=description,
-            year=year,
-            genre=genre,
-            status=status,
-            rating=rating if rating else None,
-            item_type=item_type
-        )
-
-        # Retornando uma mensagem de sucesso
-        return HttpResponse("Livro cadastrado com sucesso.")
-        
+        try:
+            new_book = Books.objects.create(
+                title=title,
+                ean_isbn13=ean_isbn13,
+                upc_isbn10=upc_isbn10,
+                author_first_name=author_first_name,
+                author_last_name=author_last_name,
+                publisher=publisher,
+                description=description,
+                year=year,
+                genre=genre,
+                status=status,
+                rating=rating if rating else None,
+                item_type=item_type
+            )
+            messages.success(request, "Livro cadastrado com sucesso.")
+            return redirect('/biblioteca/cadastrar-livro/')
+        except Exception as e:
+            messages.error(request, f"Erro ao cadastrar o livro: {str(e)}")
+            return redirect('/biblioteca/cadastrar-livro/')
     else:
-        # Se o método HTTP não for POST, retorne uma mensagem de erro
-        return HttpResponse("O método HTTP esperado é POST.")
+        genres = Genres.objects.all()
+        statuses = Status.objects.all()
+        return render(request, 'cadastrar-livro.html', {'genres': genres, 'statuses': statuses})
 	
-# Atualiza Cadastro de Livros 
-def atualiza_livro(request):
-    return render(request, "biblioteca/atualiza-livro.html")
+def atualiza_livro(request, book_id):
+    livro = get_object_or_404(Books, pk=book_id)
+    return render(request, "biblioteca/atualiza-livro.html", {'book': livro})
 
-def atualiza_cadastro_livro(request, livro_id):
-    # Obtém o livro existente do banco de dados
-    livro = get_object_or_404(Books, id=livro_id)
+# Processa a atualização do livro
+def atualiza_cadastro_livro(request, book_id):
+    livro = get_object_or_404(Books, pk=book_id)
 
     if request.method == "POST":
         # Recebendo os dados do formulário
-        dados_formulario = request.POST
-
-        # Atualizando os dados do livro com base nos dados do formulário
-        livro.title = dados_formulario.get("title", livro.title)
-        livro.ean_isbn13 = dados_formulario.get("ean_isbn13", livro.ean_isbn13)
-        livro.upc_isbn10 = dados_formulario.get("upc_isbn10", livro.upc_isbn10)
-        livro.author_first_name = dados_formulario.get(
-            "author_first_name", livro.author_first_name)
-        livro.author_last_name = dados_formulario.get(
-            "author_last_name", livro.author_last_name)
-        livro.publisher = dados_formulario.get("publisher", livro.publisher)
-        livro.description = dados_formulario.get(
-            "description", livro.description)
-        livro.year = dados_formulario.get("year", livro.year)
+        livro.title = request.POST.get("title")
+        livro.ean_isbn13 = request.POST.get("ean_isbn13")
+        livro.upc_isbn10 = request.POST.get("upc_isbn10")
+        livro.author_first_name = request.POST.get("author_first_name")
+        livro.author_last_name = request.POST.get("author_last_name")
+        livro.publisher = request.POST.get("publisher")
+        livro.description = request.POST.get("description")
+        livro.year = request.POST.get("year")
 
         # Verificando se o gênero e o status fornecidos existem no banco de dados
-        genre_name = dados_formulario.get("genre")
-        status_name = dados_formulario.get("status")
+        genre_name = request.POST.get("genre")
+        status_name = request.POST.get("status")
         genre = Genres.objects.filter(name=genre_name).first()
         status = Status.objects.filter(name=status_name).first()
 
         if not genre or not status:
-            # Se o gênero ou status não existem, retorne uma mensagem de erro
             return HttpResponse("O gênero ou status fornecido não existe.")
-
+        
         livro.genre = genre
         livro.status = status
-
-        livro.rating = dados_formulario.get("rating", livro.rating)
-        livro.item_type = dados_formulario.get("item_type", livro.item_type)
+        livro.rating = request.POST.get("rating", livro.rating)
+        livro.item_type = request.POST.get("item_type", livro.item_type)
 
         # Salvando as alterações no banco de dados
         livro.save()
 
         # Retornando uma mensagem de sucesso
-        return HttpResponse("Livro atualizado com sucesso.")
-
+        messages.success(request, 'Devolução registrada com sucesso!')
+        storage = messages.get_messages(request)
+        for message in storage:
+            pass  # A leitura da mensagem a consome da sessão
+        return redirect('detalhes-livro', book_id=book_id)
+    
     else:
-        # Se o método HTTP não for POST, retorne uma mensagem de erro
         return HttpResponse("O método HTTP esperado é POST.")

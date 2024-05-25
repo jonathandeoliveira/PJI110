@@ -1,46 +1,44 @@
 {% extends 'index.html' %}
 
-{% block 'title' %}Atualização de Livro{% endblock  %}
+{% block title %}Atualização de Livro{% endblock  %}
   
-{% block 'body' %}
-
-<div class = "container">
-  <div class = "row">
-    <div class= "col-md-3"  ></div>
-    <div class= "col-md">
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md">
       <h1>Atualização de Livro</h1>
       <hr>
-      <form method="POST" action="{% url "atualiza_cadastro_livro" %}">{% csrf_token %}
-        
-        <label> Título</label>
-          <input name="title" class="form-control" type="text" placeholder="Título"><br>
+      <form method="POST" action="{% url 'atualiza_cadastro_livro' book.id %}">{% csrf_token %}
+        <label>Título</label>
+        <input name="title" class="form-control" type="text" placeholder="Título" value="{{ book.title }}"><br>
         <label>EAN ISBN 13</label>
-          <input name="ean_isbn13" class="form-control" type="text" placeholder="EAN ISBN 13"><br>
+        <input name="ean_isbn13" class="form-control" type="text" placeholder="EAN ISBN 13" pattern="\d{13}" value="{{ book.ean_isbn13 }}"><br>
         <label>UPC ISBN 10</label>
-          <input name="upc_isbn10" class="form-control" type="text" placeholder="UPC ISBN 10"><br>
-        <label >Nome do Autor</label>
-          <input name="author_first_name" class="form-control" type="text" placeholder="Nome do Autor"><br>
+        <input name="upc_isbn10" class="form-control" type="text" placeholder="UPC ISBN 10" pattern="\d{10}" value="{{ book.upc_isbn10 }}"><br>
+        <label>Nome do Autor</label>
+        <input name="author_first_name" class="form-control" type="text" placeholder="Nome do Autor" value="{{ book.author_first_name }}"><br>
         <label>Sobrenome do Autor</label>
-          <input name="author_last_name" class="form-control" type="text" placeholder="Sobrenome do Autor"><br>
+        <input name="author_last_name" class="form-control" type="text" placeholder="Sobrenome do Autor" value="{{ book.author_last_name }}"><br>
         <label>Editora</label>
-          <input name="publisher" class="form-control" type="text" placeholder="Editora"><br>
+        <input name="publisher" class="form-control" type="text" placeholder="Editora" value="{{ book.publisher }}"><br>
         <label>Descrição</label>
-          <input name="description" class="form-control" type="text" placeholder="Descrição"><br>
+        <input name="description" class="form-control" type="text" placeholder="Descrição" value="{{ book.description }}"><br>
         <label>Ano</label>
-          <input name="year" class="form-control" type="text" placeholder="Ano"><br>
+        <input name="year" class="form-control" type="text" placeholder="Ano" value="{{ book.year }}"><br>
         <label>Gênero</label>
-          <input name="genre" class="form-control" type="text" placeholder="Gênero"><br>
+        <input name="genre" class="form-control" type="text" placeholder="Gênero" value="{{ book.genre.name }}"><br>
         <label>Status</label>
-          <input name="status" class="form-control" type="#" placeholder="Status"><br>
+        <input name="status" class="form-control" type="text" placeholder="Status" value="{{ book.status.name }}"><br>
         <label>Avaliação</label>
-          <input name="rating" class="form-control" type="text" placeholder="Avaliação"><br>
+        <input name="rating" class="form-control" type="text" placeholder="Avaliação" value="{{ book.rating }}"><br>
         <label>Item</label>
-          <input name="item_type" class="form-control" type="text" placeholder="Item"><br>
-        <input class ="btn btn-info" type="submit" value="Atualiza Livro" >
+        <input name="item_type" class="form-control" type="text" placeholder="Item" value="{{ book.item_type }}"><br>
+        <input class="button" type="submit" value="Atualizar Livro">
+        <a class="button" href="{% url 'livros' %}" role="button">Voltar</a>
       </form>
     </div>
-    <div class= "col-md-3"></div>
+    <div class="col-md-3"></div>
   </div>
 </div>
-
 {% endblock %}

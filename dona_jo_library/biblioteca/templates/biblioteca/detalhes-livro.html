@@ -7,11 +7,7 @@
     {% if messages %}
         <ul class="messages">
             {% for message in messages %}
-                {% if message == 'Devolução registrada com sucesso!' %}
                     <li>{{ message }}</li>
-                {% elif message == 'Empréstimo registrado com sucesso!' %}
-                    <li>{{ message }}</li>
-                {% endif %}
             {% endfor %}
         </ul>
     {% endif %}
@@ -40,6 +36,9 @@
  
     
     {% if user.is_authenticated %}
+        <form method="post" action="{% url 'atualiza-livro' book.id %}">{% csrf_token %}
+            <button type="submit" class="button">Editar livro</button>
+        </form>
         {% if user.user_type.code_description == 'Bibliotecario' %}
             {% if book.status.name == 'Disponivel' %}
                 <a class="button" href="{% url 'emprestimos' book.id %}" role="button">Cadastrar Empréstimo</a>
